@@ -27,7 +27,7 @@ public class Mainprog {
         ArrayList<String[]> arrberth = new ArrayList<String[]>();
         ArrayList<Berth> listberth = new ArrayList<Berth>();
         
-        String file = "D:\\TTTa\\bap_irregular_layouts_instances\\instances_and_results\\instances\\realistic\\problem_10_vessels_1.txt";
+        String file = "src/instancetest/problem_10_vessels_1.txt";
         int lineNumber=0;
         String text="";
         
