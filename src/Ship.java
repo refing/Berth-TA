@@ -24,6 +24,9 @@ public class Ship {
     private int costDelay;
     //private ArrayList <Integer> processTimes = new ArrayList<>();
     private int [] processTimes = new int[11];
+    
+    private int ti;
+    private int ri;
 
 
     public Ship(int shipId) {
@@ -134,6 +137,23 @@ public class Ship {
     public void setProcessTimes(int[] processTimes) {
         this.processTimes = processTimes;
     }
+
+    public int getTi() {
+        return ti;
+    }
+
+    public void setTi(int ti) {
+        this.ti = ti;
+    }
+
+    public int getRi() {
+        return ri;
+    }
+
+    public void setRi(int ri) {
+        this.ri = ri;
+    }
             
+    
     
 }
