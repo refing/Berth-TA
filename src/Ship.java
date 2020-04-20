@@ -27,6 +27,9 @@ public class Ship {
     
     private int ti;
     private int ri;
+    private int hi;
+    
+    private int berth;
 
 
     public Ship(int shipId) {
@@ -153,7 +156,24 @@ public class Ship {
     public void setRi(int ri) {
         this.ri = ri;
     }
+
+    public int getHi() {
+        return hi;
+    }
+
+    public void setHi(int hi) {
+        this.hi = hi;
+    }
+
+    public int getBerth() {
+        return berth;
+    }
+
+    public void setBerth(int berth) {
+        this.berth = berth;
+    }
             
+    
     
     
 }

@@ -32,7 +32,9 @@ public class Mainprog {
         ReadFile read = new ReadFile(file, arrship, listship, arrberth, listberth, listbertha);
         InitSolution init = new InitSolution(arrship, listship, arrberth, listberth, listbertha);
         
-        init.cekhc();
+        init.cekhc(listship);
+        
+        init.generatenew(listship);
         
         
           
