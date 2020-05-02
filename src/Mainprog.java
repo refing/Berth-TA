@@ -27,14 +27,26 @@ public class Mainprog {
         ArrayList<Berth> listberth = new ArrayList<Berth>();
         ArrayList<BerthTrans> listbertha = new ArrayList<BerthTrans>();
         
-        String file = "src/instancetest/problem_10_vessels_1.txt";
+//        String file = "src/instancetest/problem_10_vessels_1.txt";
+        String file = "src/instance/problem_100_vessels_0.txt";
         
         ReadFile read = new ReadFile(file, arrship, listship, arrberth, listberth, listbertha);
         InitSolution init = new InitSolution(arrship, listship, arrberth, listberth, listbertha);
+        Util.cekhc(init.insol1());
+        System.out.println("");
+        System.out.println("cost initial solution = "+Util.cost(init.insol1()));
+        System.out.println("");
+        Heuristic heur = new Heuristic(init.insol1());
+        heur.ils();
+        System.out.println("cke hc = " + Util.cekhc(heur.ilssol));
         
-        init.cekhc(listship);
         
-        init.generatenew(listship);
+        
+//        init.printinit(listship);
+//        init.cekhc(listship);
+//        Heuristic.generatenew(listship);
+        
+        
         
         
           

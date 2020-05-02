@@ -30,6 +30,9 @@ public class Ship {
     private int hi;
     
     private int berth;
+    
+    private int rti;
+    private int rri;
 
 
     public Ship(int shipId) {
@@ -171,6 +174,22 @@ public class Ship {
 
     public void setBerth(int berth) {
         this.berth = berth;
+    }
+
+    public int getRti() {
+        return rti;
+    }
+
+    public void setRti(int rti) {
+        this.rti = rti;
+    }
+
+    public int getRri() {
+        return rri;
+    }
+
+    public void setRri(int rri) {
+        this.rri = rri;
     }
             
     
