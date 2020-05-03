@@ -1,3 +1,5 @@
+package taberth;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -21,30 +23,45 @@ public class Mainprog {
     
     public static void main(String[] args) throws IOException {
         
-        ArrayList<String[]> arrship = new ArrayList<String[]>();
-        ArrayList<Ship> listship = new ArrayList<Ship>();
-        ArrayList<String[]> arrberth = new ArrayList<String[]>();
-        ArrayList<Berth> listberth = new ArrayList<Berth>();
-        ArrayList<BerthTrans> listbertha = new ArrayList<BerthTrans>();
+        ArrayList<String[]> arrship = new ArrayList<>();
+        ArrayList<Ship> listship = new ArrayList<>();
+        ArrayList<String[]> arrberth = new ArrayList<>();
+        ArrayList<Berth> listberth = new ArrayList<>();
+        ArrayList<BerthTrans> listbertha = new ArrayList<>();
         
 //        String file = "src/instancetest/problem_10_vessels_1.txt";
         String file = "src/instance/problem_100_vessels_0.txt";
         
         ReadFile read = new ReadFile(file, arrship, listship, arrberth, listberth, listbertha);
-        InitSolution init = new InitSolution(arrship, listship, arrberth, listberth, listbertha);
-        Util.cekhc(init.insol1());
+        InitSolution init = new InitSolution(listship, listberth, listbertha);
+        
         System.out.println("");
-        System.out.println("cost initial solution = "+Util.cost(init.insol1()));
+        System.out.println("cost initial solution = "+Util.cost(init.initialsol));
         System.out.println("");
-        Heuristic heur = new Heuristic(init.insol1());
-        heur.ils();
-        System.out.println("cke hc = " + Util.cekhc(heur.ilssol));
+        
+        System.out.println("cost initial "+Util.cost(init.listship));
+        System.out.println("M initial "+init.M);
+        
+        Heuristic heur = new Heuristic(init.initialsol);
+        System.out.println("cost initial "+Util.cost(heur.initsol));
+        System.out.println("heur");
+        heur.hill2();
         
         
+//        heur.ils();
+//        System.out.println("cke hc ils = " + Util.cekhc(heur.ilssol));
+//        
+//        heur.gd();
+//        System.out.println("cke hc gd= " + Util.cekhc(heur.gdsol));
+
+        //heur.hill();
+//        heur.countagain(heur.hilsol);
+
+        //System.out.println("hc hil="+Util.cekhc(heur.hilsol));
         
-//        init.printinit(listship);
-//        init.cekhc(listship);
-//        Heuristic.generatenew(listship);
+        //System.out.println("cost hil="+Util.cost(heur.hilsol));
+        //System.out.println("cost initial "+Util.cost(heur.initsol));
+        
         
         
         

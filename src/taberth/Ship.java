@@ -1,3 +1,5 @@
+package taberth;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,12 +15,12 @@ public class Ship {
     
     private int shipId;
     private String type;
-    private float draft;
-    private float length;
-    private float width;
-    private float DWT;
-    private float arrival;
-    private float desDepart;
+    private double draft;
+    private double length;
+    private double width;
+    private double DWT;
+    private double arrival;
+    private double desDepart;
     private int manouvTime;
     private int costWait;
     private int costDelay;
@@ -31,12 +33,30 @@ public class Ship {
     
     private int berth;
     
-    private int rti;
-    private int rri;
 
 
     public Ship(int shipId) {
         this.shipId = shipId;
+    }
+    
+    public Ship(Ship ship){
+        this.shipId=ship.shipId;
+        this.type=ship.type;
+        this.draft=ship.draft;
+        this.length=ship.length;
+        this.width=ship.width;
+        this.DWT=ship.DWT;
+        this.arrival=ship.arrival;
+        this.desDepart=ship.desDepart;
+        this.manouvTime=ship.manouvTime;
+        this.costWait=ship.costWait;
+        this.costDelay=ship.costDelay;
+        this.processTimes = ship.processTimes;
+        this.ti=ship.ti;
+        this.ri=ship.ri;
+        this.hi=ship.hi;
+        this.berth=ship.berth;
+        
     }
 
     public int getShipId() {
@@ -55,51 +75,51 @@ public class Ship {
         this.type = type;
     }
 
-    public float getDraft() {
+    public double getDraft() {
         return draft;
     }
 
-    public void setDraft(float draft) {
+    public void setDraft(double draft) {
         this.draft = draft;
     }
 
-    public float getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(float length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
-    public float getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public float getDWT() {
+    public double getDWT() {
         return DWT;
     }
 
-    public void setDWT(float DWT) {
+    public void setDWT(double DWT) {
         this.DWT = DWT;
     }
 
-    public float getArrival() {
+    public double getArrival() {
         return arrival;
     }
 
-    public void setArrival(float Arrival) {
+    public void setArrival(double Arrival) {
         this.arrival = Arrival;
     }
 
-    public float getDesDepart() {
+    public double getDesDepart() {
         return desDepart;
     }
 
-    public void setDesDepart(float desDepart) {
+    public void setDesDepart(double desDepart) {
         this.desDepart = desDepart;
     }
 
@@ -176,21 +196,6 @@ public class Ship {
         this.berth = berth;
     }
 
-    public int getRti() {
-        return rti;
-    }
-
-    public void setRti(int rti) {
-        this.rti = rti;
-    }
-
-    public int getRri() {
-        return rri;
-    }
-
-    public void setRri(int rri) {
-        this.rri = rri;
-    }
             
     
     

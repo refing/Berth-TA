@@ -1,3 +1,5 @@
+package taberth;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,10 +14,10 @@ public class Berth {
     private int idBerth;
     private int idAsli;
     private String type;
-    private float maxDraft;
-    private float maxLength; 
-    private float maxWidth;
-    private float maxDWT;
+    private double maxDraft;
+    private double maxLength; 
+    private double maxWidth;
+    private double maxDWT;
 
     public Berth(int idBerth) {
         this.idBerth = idBerth;
@@ -45,35 +47,35 @@ public class Berth {
         this.type = type;
     }
 
-    public float getMaxDraft() {
+    public double getMaxDraft() {
         return maxDraft;
     }
 
-    public void setMaxDraft(float maxDraft) {
+    public void setMaxDraft(double maxDraft) {
         this.maxDraft = maxDraft;
     }
 
-    public float getMaxLength() {
+    public double getMaxLength() {
         return maxLength;
     }
 
-    public void setMaxLength(float maxLength) {
+    public void setMaxLength(double maxLength) {
         this.maxLength = maxLength;
     }
 
-    public float getMaxWidth() {
+    public double getMaxWidth() {
         return maxWidth;
     }
 
-    public void setMaxWidth(float maxWidth) {
+    public void setMaxWidth(double maxWidth) {
         this.maxWidth = maxWidth;
     }
 
-    public float getMaxDWT() {
+    public double getMaxDWT() {
         return maxDWT;
     }
 
-    public void setMaxDWT(float maxDWT) {
+    public void setMaxDWT(double maxDWT) {
         this.maxDWT = maxDWT;
     }
 

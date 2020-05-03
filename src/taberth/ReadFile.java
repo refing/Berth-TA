@@ -1,3 +1,5 @@
+package taberth;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,19 +18,19 @@ import java.util.Arrays;
  * @author refing
  */
 public class ReadFile {
-    ArrayList<String[]> arrship;
-    ArrayList<Ship> listship;
-
-    ArrayList<String[]> arrberth;
-    ArrayList<Berth> listberth;
-    
-    ArrayList<BerthTrans> listbertha;
+//    ArrayList<String[]> arrship;
+//    ArrayList<Ship> listship;
+//
+//    ArrayList<String[]> arrberth;
+//    ArrayList<Berth> listberth;
+//    
+//    ArrayList<BerthTrans> listbertha;
     public ReadFile(String file, ArrayList<String[]> arrship,ArrayList<Ship> listship,ArrayList<String[]> arrberth,ArrayList<Berth> listberth, ArrayList<BerthTrans> listbertha)throws IOException {
-        this.arrberth=arrberth;
-        this.arrship=arrship;
-        this.listberth=listberth;
-        this.listship=listship;
-        this.listbertha=listbertha;
+//        this.arrberth=arrberth;
+//        this.arrship=arrship;
+//        this.listberth=listberth;
+//        this.listship=listship;
+//        this.listbertha=listbertha;
         
         int lineNumber=0;
         String text="";    
@@ -135,10 +137,10 @@ public class ReadFile {
             Berth berth = new Berth(i);
             for (String strArr : arrberth.get(i)){
                 berth.setType(arrberth.get(i)[0]);
-                berth.setMaxDraft(Float.parseFloat(arrberth.get(i)[1]));
-                berth.setMaxLength(Float.parseFloat(arrberth.get(i)[2]));
-                berth.setMaxWidth(Float.parseFloat(arrberth.get(i)[3]));
-                berth.setMaxDWT(Float.parseFloat(arrberth.get(i)[4]));
+                berth.setMaxDraft(Double.parseDouble(arrberth.get(i)[1]));
+                berth.setMaxLength(Double.parseDouble(arrberth.get(i)[2]));
+                berth.setMaxWidth(Double.parseDouble(arrberth.get(i)[3]));
+                berth.setMaxDWT(Double.parseDouble(arrberth.get(i)[4]));
            }
             listberth.add(berth);
         }
@@ -153,12 +155,12 @@ public class ReadFile {
 //                }
                 
                 ship.setType(arrship.get(i)[0]);
-                ship.setDraft(Float.parseFloat(arrship.get(i)[1]));
-                ship.setLength(Float.parseFloat(arrship.get(i)[2]));
-                ship.setWidth(Float.parseFloat(arrship.get(i)[3]));
-                ship.setDWT(Float.parseFloat(arrship.get(i)[4]));
-                ship.setArrival(Float.parseFloat(arrship.get(i)[5]));
-                ship.setDesDepart(Float.parseFloat(arrship.get(i)[6]));
+                ship.setDraft(Double.parseDouble(arrship.get(i)[1]));
+                ship.setLength(Double.parseDouble(arrship.get(i)[2]));
+                ship.setWidth(Double.parseDouble(arrship.get(i)[3]));
+                ship.setDWT(Double.parseDouble(arrship.get(i)[4]));
+                ship.setArrival(Double.parseDouble(arrship.get(i)[5]));
+                ship.setDesDepart(Double.parseDouble(arrship.get(i)[6]));
                 ship.setManouvTime(Integer.parseInt(arrship.get(i)[7]));
                 ship.setCostWait(Integer.parseInt(arrship.get(i)[8]));
                 ship.setCostDelay(Integer.parseInt(arrship.get(i)[9]));

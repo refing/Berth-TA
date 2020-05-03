@@ -1,3 +1,5 @@
+package taberth;
+
 
 import java.util.ArrayList;
 
@@ -13,43 +15,62 @@ import java.util.ArrayList;
  */
 public class Util {
     public static boolean cekhc(ArrayList<Ship> listship){
+        boolean cek0 = false;
         boolean cek1 = false;
         boolean cek2 = false;
         boolean cek3 = false;
+        boolean cek4 = false;
         boolean valid = false;
         for (int i = 0; i < listship.size(); i++) {
+            //constrain hi!=0
+            if (listship.get(i).getHi()!=0) {
+                cek0=true;
+            }else{
+                cek0=false;
+                System.out.println(i+" Xconstrain 0");
+            }
             //constrain ti >= ai
             if(listship.get(i).getTi()>=(int)listship.get(i).getArrival()){
                 cek1=true;
+            }else{
+                cek1=false;
+                System.out.println(i+" Xconstrain 1");
             }
             //constrain ri>= ti+hi
             if(listship.get(i).getRi()>=listship.get(i).getTi()+listship.get(i).getHi()){
                 cek2=true;
+            }else{
+                cek2=false;
+                System.out.println(i+" Xconstrain 2");
             }
-            //consntrain ti >= relk //???????broken
-//            if(listship.get(i).getTi()>=listbertha.get(listship.get(i).getBerth()).getReleasetime()){
-//                System.out.println("lolosss"+i);
+            //constrain kapal 2 bisa berth kalo kapal 1 udah depart (7)
+//            if(conflictmatrix(listship)==true){
+                cek3=true;
+//            }else{
+//                cek3=false;
+//                System.out.println(i+" Xconstrain 3");
 //            }
-            if (cek1==false||cek2==false) {
-                break;
+            //consntrain ti >= relk //?
+            for(int ii = 0; ii < listship.size(); ii++) {
+                for(int j = ii+1; j < listship.size(); j++) {
+                    if (listship.get(ii).getBerth()==listship.get(j).getBerth()) {
+    //                    System.out.println("ship "+listship.get(i).getShipId()+" di berth "+listship.get(i).getBerth()+" dan ship "+listship.get(j).getShipId()+" diberth "+listship.get(j).getBerth());
+                        if(listship.get(j).getTi()>=listship.get(ii).getRi()){
+                            cek4 =true;
+                        }else{
+                            cek4 =false;
+                            System.out.println(i+" Xconstrain 4");
+                        }
+                    }
+                }
             }
-            
-        }
-        //constrain kapal 2 bisa berth kalo kapal 1 udah depart (7)
-        if(conflictmatrix(listship)==true){
-            cek3=true;
-        }else{
-            cek3=false;
         }
         
         
-        //Ship            Berth       Start           End                 Cost
-        //ti>ai
-        //ri>ti+hi
-        //ti>relk
-        if(cek1&&cek2&&cek3){
+        if(cek0&&cek1&&cek2&&cek3&&cek4){
             valid=true;
-        }
+        }else
+            valid=false;
         return valid;
     }
     
@@ -62,7 +83,7 @@ public class Util {
         
         for(int i = 0; i < listship.size(); i++) {
             for(int j = i+1; j < listship.size(); j++) {
-                if(listship.get(i).getRi()<=listship.get(j).getTi()){
+                if(listship.get(j).getTi()>=listship.get(i).getRi()){
                     sigma =1;
                 }
             }
@@ -87,10 +108,18 @@ public class Util {
         return cost;
     }
     
+    public static ArrayList<Ship> cloneList(ArrayList<Ship> sl) {
+        ArrayList<Ship> clonedList = new ArrayList<Ship>(sl.size());
+        for (Ship ship : sl) {
+            clonedList.add(new Ship(ship));
+        }
+        return clonedList;
+    }
+    
     public static void printinit(ArrayList<Ship> listship){
         int[][] berthsch = new int[listship.size()][5];
         //masukin schedule
-            //id ship , id berthh , arrival ship, end ship, cost
+        //id ship , id berthh , arrival ship, end ship, cost
         for (int i = 0; i < listship.size(); i++) {
             berthsch[i][0]=listship.get(i).getShipId();
             berthsch[i][1]=listship.get(i).getBerth();
@@ -109,5 +138,20 @@ public class Util {
         }
         
         System.out.println("total cost = " + cost(listship));  
+    }
+    public static boolean cekrel(ArrayList<Ship> listship){
+        boolean cek4=false;
+        //consntrain ti >= relk //?
+        for(int i = 0; i < listship.size(); i++) {
+            for(int j = i+1; j < listship.size(); j++) {
+                if (listship.get(i).getBerth()==listship.get(j).getBerth()) {
+//                    System.out.println("ship "+listship.get(i).getShipId()+" di berth "+listship.get(i).getBerth()+" dan ship "+listship.get(j).getShipId()+" diberth "+listship.get(j).getBerth());
+                    if(listship.get(j).getTi()>=listship.get(i).getRi()){
+                        cek4 =true;
+                    }
+                }
+            }
+        }
+        return cek4;
     }
 }
