@@ -10,14 +10,9 @@ package taberth;
  *
  * @author refing
  */
-import java.io.BufferedReader;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.*;
-import java.util.*;
 
 public class Mainprog {
     
@@ -45,10 +40,12 @@ public class Mainprog {
         Heuristic heur = new Heuristic(init.initialsol);
         System.out.println("cost initial "+Util.cost(heur.initsol));
         System.out.println("heur");
-        heur.hill2();
+//        heur.hill();
+
+//        heur.tesswap();
         
         
-//        heur.ils();
+        heur.ilsgd();
 //        System.out.println("cke hc ils = " + Util.cekhc(heur.ilssol));
 //        
 //        heur.gd();

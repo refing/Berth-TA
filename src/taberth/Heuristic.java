@@ -17,16 +17,28 @@ import java.util.Random;
  */
 public class Heuristic {
     ArrayList<Ship> initsol;
-    ArrayList<Ship> initsol2;
     ArrayList<Ship> ilssol;
     ArrayList<Ship> gdsol;
     ArrayList<Ship> hilsol;
     public Heuristic(ArrayList<Ship> initsol){
         this.initsol=initsol;
-        this.initsol2=initsol;
     }
     
-    public void hill2(){
+    public void tesswap(){
+        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
+        
+        double penalty1 = Util.cost(sbest);
+        double penalty2 = 0;
+        
+        swap(stemp);
+        Util.cekhc(stemp);
+        
+        System.out.println(" penalty best "+penalty2);
+        
+    }
+    
+    public void hill(){
         ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
         ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
         
@@ -35,13 +47,13 @@ public class Heuristic {
         for (int i = 0; i < 1000; i++) {
             
 //            stemp=sbest;
-            shift(stemp);
+//            swap(stemp);
 //            if(Util.cekhc(stemp)==false){
 //                System.out.println("invalid");
 //            }
-//            do {
-//                stemp = shift(sbest);
-//            } while (!Util.cekhc(stemp));
+            do {
+                swap(stemp);
+            } while (!Util.cekhc(stemp));
             
             penalty2=Util.cost(stemp);
             if(penalty2 < penalty1){
@@ -59,42 +71,11 @@ public class Heuristic {
         System.out.println("best"+penalty1);
     }
     
-    public void hill(){
-        ArrayList<Ship> sbest = new ArrayList<Ship>();
-        ArrayList<Ship> stemp = new ArrayList<Ship>();
-        sbest=Util.cloneList(initsol);
-//        ArrayList<Ship> asli = (ArrayList)initsol.clone();
-//        ArrayList<Ship> sbest = (ArrayList)initsol.clone();
-//        ArrayList<Ship> scandidate = (ArrayList)initsol.clone();
-//        ArrayList<Ship> stemp = (ArrayList)initsol.clone();
-        
-        double penalty1 = Util.cost(sbest);
-        double penalty2 = 0;
-        
-        for (int i = 0; i < 10000; i++) {
-            
-            do {
-                shift(sbest);
-            } while (!Util.cekhc(stemp));
-            
-            penalty2=Util.cost(stemp);
-            if(penalty2 < penalty1){
-                penalty1 = penalty2;
-                sbest = stemp;
-            }else{
-                stemp = sbest;
-            }
-//            System.out.println("iteration "+i+"cost="+penalty1);
-        }
-        this.hilsol=sbest;
-        System.out.println("cost : "+penalty1);
-    }
+    
     public void ils (){
-        ArrayList<Ship> asli = (ArrayList)initsol.clone();
-        ArrayList<Ship> sbest = (ArrayList)initsol.clone();
-        ArrayList<Ship> scandidate = (ArrayList)initsol.clone();
-        ArrayList<Ship> stemp = (ArrayList)initsol.clone();
-        
+        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> scandidate = new ArrayList<Ship>(initsol);
         
             
         int maxiteration = 1000;
@@ -107,60 +88,63 @@ public class Heuristic {
         double penalty1 = Util.cost(sbest);
         double penalty2 = 0;
         
-        
         boolean check1 = false;
         boolean check2 = false;
         
         for (int i = 0; i < 1000; i++) {
             
             do {
-                shift(sbest);
+                shift(stemp);
             } while (!Util.cekhc(stemp));
             
             penalty2=Util.cost(stemp);
             if(penalty2 < penalty1){
                 penalty1 = penalty2;
-                sbest = stemp;
+                sbest = new ArrayList<Ship>(stemp);
             }else{
-                stemp = sbest;
+                stemp = new ArrayList<Ship>(sbest);
             }
         }
         do {
+            
+            iteration++;
              do {
-//                scandidate = shift(sbest);
+                shift(scandidate);
             } while (!Util.cekhc(scandidate));
             
             penalty2=Util.cost(scandidate);
             if(penalty2 < penalty1){
                 penalty1 = penalty2;
-                sbest = scandidate;
+                sbest = new ArrayList<Ship>(scandidate);
             }else{
-                scandidate = sbest;
+                scandidate = new ArrayList<Ship>(sbest);
             }
-            iteration++;
+            System.out.println(iteration+" cost : "+penalty1);
         } while (!(iteration==maxiteration));
         
         this.ilssol = sbest;
-        System.out.println("cost : "+Util.cost(sbest));
+        System.out.println("cost : "+penalty1);
            
     }
     public void gd(){
         //initsol
-        ArrayList<Ship> sbest = (ArrayList)initsol.clone();
-        ArrayList<Ship> stemp = (ArrayList)initsol.clone();
+        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
         
         int cost1 = 0;
         int cost2 = 0;
         int estimatedquality = 0;
-        float level = Util.cost(sbest);
-        float decayrate = 0;
+        double level = Util.cost(sbest);
+        double decayrate = 0;
         int iteration = 0;
         int maxiteration = 10000;
         
         do {
+            
+            iteration++;
             //create neigborhood
             do {
-//                stemp = shift(sbest);
+                shift(stemp);
             } while (!Util.cekhc(stemp));
 
             //calculate cost
@@ -175,22 +159,229 @@ public class Heuristic {
 
             //kalo improve, update best local solution and level
             if (cost2<cost1) {
-                sbest = stemp;
+//                cost1=cost2;
+                sbest = new ArrayList<Ship>(stemp);
                 level = cost2;
             }else if (cost2<=level) {
-                sbest = stemp;
+//                cost1=cost2;
+                sbest = new ArrayList<Ship>(stemp);
             }else
-                stemp = sbest;
+                stemp = new ArrayList<Ship>(sbest);
             //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
             level=level-decayrate;
 
             //stop criteria
-            iteration++;
+            System.out.println(iteration+" cost "+cost2);
         } while (!(iteration==maxiteration));
 
         this.gdsol=sbest;
-        System.out.println("cost : "+Util.cost(sbest));
+        System.out.println("cost : "+cost1);
         
+    }
+    
+    public void ilsgd(){
+        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> scandidate = new ArrayList<Ship>(initsol);
+        
+        Random rn = new Random();
+                
+        int maxiteration = 1000;
+        
+        double penalty1 = Util.cost(sbest);
+        double penalty2 = 0;
+        int cost1 = 0;
+        int cost2 = 0;
+        
+        int estimatedquality = 0;
+        double level = Util.cost(sbest);
+        double decayrate = 0;
+        
+        //hill climbing 1 cari local optima 1
+        for (int i = 0; i < maxiteration; i++) {
+            
+//            stemp=sbest;
+//            swap(stemp);
+//            if(Util.cekhc(stemp)==false){
+//                System.out.println("invalid");
+//            }
+            do {
+                shift(stemp);
+            } while (!Util.cekhc(stemp));
+            
+            penalty2=Util.cost(stemp);
+            if(penalty2 < penalty1){
+                penalty1 = penalty2;
+                sbest = new ArrayList<Ship>(stemp);
+            }else{
+                stemp = new ArrayList<Ship>(sbest);
+            }
+            System.out.println(i+" penalty best "+penalty1);
+        }
+        System.out.println(" penalty best "+penalty1);
+        
+        stemp = new ArrayList<Ship>(sbest);
+        //hill climbing lagi pake local optima baru
+        for (int i = 0; i < maxiteration; i++) {
+            cost1 = Util.cost(sbest);
+            //perturbation
+            int numb=rn.nextInt(1); //reinforcement learning
+            switch(numb){
+                case(0):
+                    do {
+                        shift(stemp);
+                    } while (!Util.cekhc(stemp));
+                    break;
+                case(1):
+                    do {
+                        swap(stemp);
+                    } while (!Util.cekhc(stemp));
+                    break;
+                case(2):
+                    do {
+                        ruincreate();
+                    } while (!Util.cekhc(stemp));
+                    break;
+            }
+            //great deluge
+            //calculate cost
+            cost2 = Util.cost(stemp);
+
+            //init level = cost terbaik
+            //estimated qualiity = cost2 - cost1
+            //decay rate = estimated quality/number of iteration
+            estimatedquality=cost2-cost1;
+            decayrate = estimatedquality/maxiteration;
+
+            //kalo improve, update best local solution and level
+            if (cost2<cost1) {
+                cost1=cost2;
+                sbest = new ArrayList<Ship>(stemp);
+                level = cost2;
+            }else if (cost2<=level) {
+                cost1=cost2;
+                sbest = new ArrayList<Ship>(stemp);
+            }else
+                stemp = new ArrayList<Ship>(sbest);
+            //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
+            level=level-decayrate;
+            System.out.println(i+" cost gd "+cost1);
+        }
+        System.out.println("cost hc "+penalty1);
+        System.out.println("cost gd"+cost1);
+        
+        
+//        
+//        
+//        int bestIndex = 0;
+//        int bestScore = pemilihanHasilScore.get(0);
+//        for (int i = 1; i < pemilihanHasil.size(); i++) {
+//            if (pemilihanHasilScore.get(i)>= bestScore) {
+//            bestIndex = i;
+//            bestScore = pemilihanHasilScore.get(i);
+//            }
+//        }
+//        System.out.println();
+//        System.out.println("Solusi terbaik :" + pemilihanHasil.get(bestIndex) +"(" + pemilihanHasilWaktu.get(bestIndex) +"," + pemilihanHasilScore.get(bestIndex) +")");
+//        
+        
+    }
+    
+    public void hillils(){
+        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> scandidate = new ArrayList<Ship>(initsol);
+        
+        int maxiteration = 1000;
+        int iteration=0;
+        
+        double penalty1 = Util.cost(sbest);
+        double penalty2 = 0;
+        int cost1 = 0;
+        int cost2 = 0;
+        
+        int estimatedquality = 0;
+        double level = Util.cost(sbest);
+        double decayrate = 0;
+        
+        //hill climbing 1 cari local optima 1
+        for (int i = 0; i < 1000; i++) {
+            
+//            stemp=sbest;
+//            swap(stemp);
+//            if(Util.cekhc(stemp)==false){
+//                System.out.println("invalid");
+//            }
+            do {
+                swap(stemp);
+            } while (!Util.cekhc(stemp));
+            
+            penalty2=Util.cost(stemp);
+            if(penalty2 < penalty1){
+                penalty1 = penalty2;
+                sbest = new ArrayList<Ship>(stemp);
+//                sbest.clear();
+//                sbest.addAll(stemp);
+            }else{
+                stemp = new ArrayList<Ship>(sbest);
+//                stemp.clear();
+//                stemp.addAll(sbest);
+            }
+            System.out.println(i+" penalty best "+penalty2);
+        }
+        
+        //perturbation
+        int numb=0; //reinforcement learning
+        switch(numb){
+            case(0):
+                do {
+                    shift(stemp);
+                } while (!Util.cekhc(stemp));
+                break;
+            case(1):
+                do {
+                    swap(stemp);
+                } while (!Util.cekhc(stemp));
+                break;
+            case(2):
+                do {
+                    ruincreate();
+                } while (!Util.cekhc(stemp));
+                break;
+        }
+        
+        //hill climbing lagi pake local optima baru
+        for (int i = 0; i < 1000; i++) {
+            do {
+                swap(stemp);
+            } while (!Util.cekhc(stemp));
+            
+            penalty2=Util.cost(stemp);
+            if(penalty2 < penalty1){
+                penalty1 = penalty2;
+                sbest = new ArrayList<Ship>(stemp);
+            }else{
+                stemp = new ArrayList<Ship>(sbest);
+            }
+            System.out.println(i+" penalty best "+penalty2);
+        }
+    }
+    
+    public static int reinforcement(){
+        int[]reinforce = new int[2];
+        int max=reinforce[0];
+        int id = 0;
+        if (reinforce[1]>max) {
+            id=1;
+            max=reinforce[1];
+        }else if(reinforce[2]>max){
+            id=2;
+            max=reinforce[2];
+        }
+        if(reinforce[0]==reinforce[1]&&reinforce[1]==reinforce[2]){
+//            id = random next int 2;
+        }
+        return id;
     }
     
     
@@ -296,70 +487,8 @@ public class Heuristic {
             
     }
     }
-    public void countagain2(ArrayList<Ship> listship){
-        ArrayList<BerthTrans> listberth2 = new ArrayList<BerthTrans>();
-        
-        
-        for (int i = 0; i < 11; i++) {
-            BerthTrans berth2 = new BerthTrans(i);
-            berth2.setReleasetime(0);
-            berth2.setHandlingtime(0);
-            listberth2.add(berth2);
-        }
-        
-        //Sort ship by increasing arrival time
-        listship.sort(Comparator.comparing(Ship::getArrival));
-        
-        //forloop
-        for (int i = 0; i < listship.size(); i++) {
-            
-            //set handling time per ship
-            Ship thisship = listship.get(i); //i
-            
-            
-            
-            for (int j = 0; j < listberth2.size(); j++) {
-                listberth2.get(j).setHandlingtime(thisship.getProcessTimes()[j]);
-            }
-            for (int j = 0; j < listberth2.size(); j++) {
-                if(thisship.getArrival()>listberth2.get(j).getReleasetime())      //??????
-                    listberth2.get(j).setReleasetime(0);
-            }
-            
-            
-            BerthTrans pilih = listberth2.get(thisship.getBerth());
-            
-            int ti = 0;
-            int ri = 0;
-            
-            if(pilih.getReleasetime()>0){
-                thisship.setCostWait(pilih.getReleasetime()-(int)thisship.getArrival());
-                ti=pilih.getReleasetime();
-            }
-            if(pilih.getReleasetime()==0){
-                ti=(int)thisship.getArrival();
-            }  
-            
-            thisship.setTi(ti);
-
-            ri = ti + pilih.getHandlingtime();
-            
-            thisship.setHi(pilih.getHandlingtime());
-            thisship.setRi(ri);
-
-            //UPDATE RELEASE TIME DI AKIR
-            listberth2.get(pilih.getId()).setReleasetime(ri);
-            //if arrival time udah selesai, release time reset jadi 0
-            //reset handling time --udah selalu direset di awal awal
-            
-           
-            
-    }
-    }
     
-    public ArrayList<Ship> swap(ArrayList<Ship> listship){
-        ArrayList<Ship> solution = listship;
-        ArrayList<Ship> swapped = listship;
+    public void swap(ArrayList<Ship> listship){
         Random rn = new Random();
         int hi = 0;
         int angka1 = 0;
@@ -370,25 +499,32 @@ public class Heuristic {
          //pick random berth
          //pick handling time di berth
         //cek handling time yang gak nol, pick compatible berth only
-        
+        int berth1=0;
+        int berth2=0;
+//        int berth3=0;
+//        int berth4=0;
         do {
-            angka1 = rn.nextInt(listship.size());
-            angka2 = rn.nextInt(listship.size());
-        } while (solution.get(angka1).getHi()==0&&solution.get(angka2).getHi()==0);
-        Ship pick1 = solution.get(angka1); //pick shipp yang akan diswap
-        Ship pick2 = solution.get(angka2); //pick shipp yang akan diswap
+            angka1 = rn.nextInt(listship.size()); //ngambil ship 1
+            angka2 = rn.nextInt(listship.size()); //ngambil ship 2
+            berth1 = listship.get(angka1).getProcessTimes()[listship.get(angka2).getBerth()];//hi ship 1 kalo ditaruh di tempatnya ship 2
+            berth2 = listship.get(angka2).getProcessTimes()[listship.get(angka1).getBerth()];//hi ship 2 kalo ditaruh di tempatnya ship 1
+//            berth3 = listship.get(angka1).getProcessTimes()[listship.get(angka1).getBerth()];
+//            berth4 = listship.get(angka2).getProcessTimes()[listship.get(angka2).getBerth()];
+        } while (berth1==0||berth2==0);
+        Ship pick1 = listship.get(angka2); //pick shipp yang akan diswap
+        Ship pick2 = listship.get(angka1); //pick shipp yang akan diswap
         
-        
+//        System.out.println("kapal 1 "+pick1.getShipId()+" di berth "+pick1.getBerth()+" kapal 2 "+pick2.getShipId()+" di berth "+pick2.getBerth());
         
         int berthtemp = 0;
         berthtemp = pick1.getBerth();
         pick1.setBerth(pick2.getBerth());
         pick2.setBerth(berthtemp);
-        
+//        System.out.println("swapped");
+//        System.out.println("kapal 1 "+pick1.getShipId()+" di berth "+pick1.getBerth()+" kapal 2 "+pick2.getShipId()+" di berth "+pick2.getBerth());
+//        
         //compute ulang ti ri hi
-//        swapped=countagain(solution);
-        
-        return swapped;
+        countagain(listship);
     }
     public void ruincreate(){
         

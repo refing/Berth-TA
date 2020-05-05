@@ -28,6 +28,8 @@ public class Util {
             }else{
                 cek0=false;
                 System.out.println(i+" Xconstrain 0");
+                System.out.println("berth "+listship.get(i).getBerth());
+                System.out.println("hi "+listship.get(i).getHi());
             }
             //constrain ti >= ai
             if(listship.get(i).getTi()>=(int)listship.get(i).getArrival()){
