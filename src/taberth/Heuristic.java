@@ -3,6 +3,7 @@ package taberth;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Random;
 
 /*
@@ -182,7 +183,6 @@ public class Heuristic {
     public void ilsgd(){
         ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
         ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
-        ArrayList<Ship> scandidate = new ArrayList<Ship>(initsol);
         
         Random rn = new Random();
                 
@@ -205,27 +205,7 @@ public class Heuristic {
 //            if(Util.cekhc(stemp)==false){
 //                System.out.println("invalid");
 //            }
-            do {
-                shift(stemp);
-            } while (!Util.cekhc(stemp));
-            
-            penalty2=Util.cost(stemp);
-            if(penalty2 < penalty1){
-                penalty1 = penalty2;
-                sbest = new ArrayList<Ship>(stemp);
-            }else{
-                stemp = new ArrayList<Ship>(sbest);
-            }
-            System.out.println(i+" penalty best "+penalty1);
-        }
-        System.out.println(" penalty best "+penalty1);
-        
-        stemp = new ArrayList<Ship>(sbest);
-        //hill climbing lagi pake local optima baru
-        for (int i = 0; i < maxiteration; i++) {
-            cost1 = Util.cost(sbest);
-            //perturbation
-            int numb=rn.nextInt(1); //reinforcement learning
+            int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
             switch(numb){
                 case(0):
                     do {
@@ -239,7 +219,47 @@ public class Heuristic {
                     break;
                 case(2):
                     do {
-                        ruincreate();
+                        ruincreate(stemp);
+                    } while (!Util.cekhc(stemp));
+                    break;
+            }
+            
+            penalty2=Util.cost(stemp);
+            if(penalty2 < penalty1){
+                penalty1 = penalty2;
+                sbest = new ArrayList<Ship>(stemp);
+            }else{
+                stemp = new ArrayList<Ship>(sbest);
+            }
+            System.out.println(i+" penalty best "+penalty1);
+        }
+        System.out.println(" penalty best "+penalty1);
+        
+        stemp = new ArrayList<Ship>(sbest);
+        //local search pake great deluge pake local optima baru dan di ils
+        for (int i = 0; i < maxiteration; i++) {
+            
+        
+        //perturb
+            //??? belum ada ruin recreate
+            
+            
+            cost1 = Util.cost(sbest);
+            int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
+            switch(numb){
+                case(0):
+                    do {
+                        shift(stemp);
+                    } while (!Util.cekhc(stemp));
+                    break;
+                case(1):
+                    do {
+                        swap(stemp);
+                    } while (!Util.cekhc(stemp));
+                    break;
+                case(2):
+                    do {
+                        ruincreate(stemp);
                     } while (!Util.cekhc(stemp));
                     break;
             }
@@ -271,19 +291,10 @@ public class Heuristic {
         System.out.println("cost gd"+cost1);
         
         
-//        
-//        
-//        int bestIndex = 0;
-//        int bestScore = pemilihanHasilScore.get(0);
-//        for (int i = 1; i < pemilihanHasil.size(); i++) {
-//            if (pemilihanHasilScore.get(i)>= bestScore) {
-//            bestIndex = i;
-//            bestScore = pemilihanHasilScore.get(i);
-//            }
-//        }
-//        System.out.println();
-//        System.out.println("Solusi terbaik :" + pemilihanHasil.get(bestIndex) +"(" + pemilihanHasilWaktu.get(bestIndex) +"," + pemilihanHasilScore.get(bestIndex) +")");
-//        
+        //acceptance criteria ils bandinginnya 
+        
+        
+       
         
     }
     
@@ -345,7 +356,7 @@ public class Heuristic {
                 break;
             case(2):
                 do {
-                    ruincreate();
+                    ruincreate(stemp);
                 } while (!Util.cekhc(stemp));
                 break;
         }
@@ -526,7 +537,98 @@ public class Heuristic {
         //compute ulang ti ri hi
         countagain(listship);
     }
-    public void ruincreate(){
+    public void ruincreate(ArrayList<Ship> listship){
+        HashMap<Integer, ArrayList<Ship>> map = new HashMap<>(); 
+        ArrayList<Ship> new0 = new ArrayList<>();
+        ArrayList<Ship> new1 = new ArrayList<>();
+        ArrayList<Ship> new2 = new ArrayList<>();
+        ArrayList<Ship> new3 = new ArrayList<>();
+        ArrayList<Ship> new4 = new ArrayList<>();
+        ArrayList<Ship> new5 = new ArrayList<>();
+        ArrayList<Ship> new6 = new ArrayList<>();
+        ArrayList<Ship> new7 = new ArrayList<>();
+        ArrayList<Ship> new8 = new ArrayList<>();
+        ArrayList<Ship> new9 = new ArrayList<>();
+        ArrayList<Ship> new10 = new ArrayList<>();
+        
+        for (int i = 0; i < listship.size(); i++) {
+            switch(listship.get(i).getBerth()){
+                case(0):
+                    new0.add(listship.get(i));
+                    map.put(0, new0);
+                    break;
+                case(1):
+                    new1.add(listship.get(i));
+                    map.put(1, new1);
+                    break;
+                case(2):
+                    new2.add(listship.get(i));
+                    map.put(2, new2);break;
+                case(3):
+                    new3.add(listship.get(i));
+                    map.put(3, new3);break;
+                case(4):
+                    new4.add(listship.get(i));
+                    map.put(4, new4);break;
+                case(5):
+                    new5.add(listship.get(i));
+                    map.put(5, new5);break;
+                case(6):
+                    new6.add(listship.get(i));
+                    map.put(6, new6);break;
+                case(7):
+                    new7.add(listship.get(i));
+                    map.put(7, new7);break;
+                case(8):
+                    new8.add(listship.get(i));
+                    map.put(8, new8);break;
+                case(9):
+                    new9.add(listship.get(i));
+                    map.put(9, new9);break;
+                case(10):
+                    new10.add(listship.get(i));
+                    map.put(10, new10);break;
+            }
+        }
+        
+//        System.out.println(map.get(3).get(0).getShipId());
+        
+        
+        ArrayList<Ship> candidate = new ArrayList<>();
+        //ruin
+        Random rn = new Random();
+        int ruinfactor = 20;
+        do {
+            //random pick berth
+            int berth = rn.nextInt(11);
+//            int r = rn.nextInt(ruinfactor);
+            int r = rn.nextInt(map.get(berth).size())+1; //random number jumlah vessel di berth
+            //pick r ship randomly di berth berth
+            for (int i = 0; i < r; i++) {
+                Ship pickedship = map.get(berth).get(i);
+                candidate.add(pickedship);
+            }
+            System.out.println("RUIN FACTOR NOW = "+ruinfactor+" r now "+r);
+            ruinfactor = ruinfactor - r;
+        } while (ruinfactor>0);
+        
+        for (int i = 0; i < candidate.size(); i++) {
+            System.out.println(i+". ship "+listship.get(candidate.get(i).getShipId()).getShipId()+" berth "+listship.get(candidate.get(i).getShipId()).getBerth());
+        }
+        
+        System.out.println("size "+candidate.size());
+        
+        //recreate
+        candidate.sort(Comparator.comparing(Ship::getArrival));
+        for (int i = 0; i < candidate.size(); i++) {
+            double u = rn.nextDouble();
+            double beta = 0.01;
+            double k = Math.log((u*beta/1-beta))/Math.log(beta);
+            
+            //ambil ship
+            Ship pick = candidate.get(i);
+            
+        }
         
     }
 

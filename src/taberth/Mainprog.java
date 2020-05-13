@@ -43,7 +43,7 @@ public class Mainprog {
 //        heur.hill();
 
 //        heur.tesswap();
-        
+//        heur.ruincreate(init.initialsol);
         
         heur.ilsgd();
 //        System.out.println("cke hc ils = " + Util.cekhc(heur.ilssol));

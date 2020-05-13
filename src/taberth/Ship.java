@@ -33,6 +33,8 @@ public class Ship {
     
     private int berth;
     
+    private Ship ship;
+    
 
 
     public Ship(int shipId) {
@@ -58,6 +60,10 @@ public class Ship {
         this.berth=ship.berth;
         
     }
+    
+//    public Ship getShip(){
+//        return this.ship;
+//    }
 
     public int getShipId() {
         return shipId;
