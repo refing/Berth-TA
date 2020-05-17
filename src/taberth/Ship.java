@@ -11,7 +11,7 @@ package taberth;
  * @author refing
  */
 import java.util.ArrayList;
-public class Ship {
+public class Ship implements Cloneable{
     
     private int shipId;
     private String type;
@@ -60,6 +60,11 @@ public class Ship {
         this.berth=ship.berth;
         
     }
+    
+    public Object clone()throws CloneNotSupportedException{  
+        return super.clone();  
+    }  
+    
     
 //    public Ship getShip(){
 //        return this.ship;

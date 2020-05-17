@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Mainprog {
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, CloneNotSupportedException  {
         
         ArrayList<String[]> arrship = new ArrayList<>();
         ArrayList<Ship> listship = new ArrayList<>();
@@ -43,9 +43,10 @@ public class Mainprog {
 //        heur.hill();
 
 //        heur.tesswap();
-//        heur.ruincreate(init.initialsol);
-        
-        heur.ilsgd();
+//        heur.runruin(init.initialsol);
+//          heur.ruincreate2(init.initialsol);
+//        heur.sementaragd();
+            heur.ilsgd();
 //        System.out.println("cke hc ils = " + Util.cekhc(heur.ilssol));
 //        
 //        heur.gd();

@@ -1,5 +1,7 @@
 package taberth;
 
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,6 +20,7 @@ public class Berth {
     private double maxLength; 
     private double maxWidth;
     private double maxDWT;
+    private ArrayList<Ship> daftarship = new ArrayList<Ship>();
 
     public Berth(int idBerth) {
         this.idBerth = idBerth;
@@ -29,6 +32,14 @@ public class Berth {
 
     public void setIdBerth(int idBerth) {
         this.idBerth = idBerth;
+    }
+
+    public ArrayList<Ship> getDaftarship() {
+        return daftarship;
+    }
+
+    public void setDaftarship(ArrayList<Ship> daftarship) {
+        this.daftarship = daftarship;
     }
     
     public int getIdAsli() {
