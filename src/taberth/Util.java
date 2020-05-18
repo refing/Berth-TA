@@ -1,6 +1,7 @@
 package taberth;
 
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 /*
@@ -77,31 +78,31 @@ public class Util {
     }
     
     
-    public static boolean conflictmatrix(ArrayList<Ship> listship){
-        int M = InitSolution.M;
-        int sigma = 0;
-        boolean conf = false;
-        boolean depart = false;
-        
-        for(int i = 0; i < listship.size(); i++) {
-            for(int j = i+1; j < listship.size(); j++) {
-                if(listship.get(j).getTi()>=listship.get(i).getRi()){
-                    sigma =1;
-                }
-            }
-        }
-        
-        for (int i = 0; i < listship.size(); i++) {
-            for (int j = i+1; j < listship.size(); j++) {
-                depart = listship.get(j).getTi()>=listship.get(i).getRi()-M+M*sigma;
-            }
-        }
-        if (depart){
-            conf= true;
-        }
-        return conf;
-    }
-    
+//    public static boolean conflictmatrix(ArrayList<Ship> listship){
+//        int M = InitSolution.M;
+//        int sigma = 0;
+//        boolean conf = false;
+//        boolean depart = false;
+//        
+//        for(int i = 0; i < listship.size(); i++) {
+//            for(int j = i+1; j < listship.size(); j++) {
+//                if(listship.get(j).getTi()>=listship.get(i).getRi()){
+//                    sigma =1;
+//                }
+//            }
+//        }
+//        
+//        for (int i = 0; i < listship.size(); i++) {
+//            for (int j = i+1; j < listship.size(); j++) {
+//                depart = listship.get(j).getTi()>=listship.get(i).getRi()-M+M*sigma;
+//            }
+//        }
+//        if (depart){
+//            conf= true;
+//        }
+//        return conf;
+//    }
+//    
     public static int cost(ArrayList<Ship> listship){
         int cost=0;
         for (int i = 0; i < listship.size(); i++) {
@@ -155,5 +156,35 @@ public class Util {
             }
         }
         return cek4;
+    }
+    public static void export(ArrayList<Ship> listfinal, String filename){
+        try{    
+            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_solution"+".txt"); 
+            fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"); 
+            fw.write("\n"); 
+            for (int i = 0; i <listfinal.size(); i++) {
+                fw.write(listfinal.get(i).getShipId()+"\t\t"+listfinal.get(i).getBerth()+"\t\t"+(int)listfinal.get(i).getArrival()+"\t\t"+listfinal.get(i).getRi()+"\t\t"+listfinal.get(i).getHi());
+                fw.write("\n"); 
+            }
+            fw.write("cost : "+Util.cost(listfinal)); 
+             
+            fw.close();    
+        } catch(Exception e){
+        	System.out.println(e);
+        }    
+            System.out.println("File "+filename+".txt berhasil disimpan di D");    
+    }
+    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename){
+        try{    
+            FileWriter fw=new FileWriter("D:\\hasil\\stat.txt"); 
+            fw.write("filename"+";"+"cost init"+";"+"cost hc"+";"+"cost ils"); 
+            fw.write("\n"); 
+            fw.write(filename+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils)); 
+//            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
+            fw.close();    
+        } catch(Exception e){
+        	System.out.println(e);
+        }    
+            System.out.println("File berhasil disimpan di D");    
     }
 }

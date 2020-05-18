@@ -1,0 +1,151 @@
+General data ----------------------------------------------------------------
+Format: #Ships #Berths #Safety_Distance_Adjacents #Safety_Distance_Opposite
+10 11 10 30
+
+Berths ----------------------------------------------------------------------
+Format for each berth: Type Max_Draft Max_Length Max_Width Max_DWT
+Berth 0
+GAS 9.5 160.0 26.0 16255.0
+CHEMICALS 11.5 213.0 32.0 45000.0
+
+Berth 1
+GAS 6.5 110.0 21.0 10000.0
+GAS 6.5 122.0 21.0 10700.0
+GAS 6.5 130.0 21.3 11800.0
+GAS 6.5 138.0 21.4 12240.0
+CHEMICALS 6.5 110.0 21.0 10000.0
+CHEMICALS 6.5 122.0 21.0 10700.0
+CHEMICALS 6.5 130.0 21.3 11800.0
+CHEMICALS 6.5 138.0 21.4 12240.0
+
+Berth 2
+MINERAL_OILS 7.0 105.0 14.5 4500.0
+MINERAL_OILS 5.8 110.0 18.8 6000.0
+
+Berth 3
+MINERAL_OILS 11.5 242.0 36.0 65000.0
+MINERAL_OILS 12.0 242.0 32.0 65000.0
+MINERAL_OILS 12.5 242.0 28.0 65000.0
+
+Berth 4
+MINERAL_OILS 15.0 295.0 43.5 125000.0
+CHEMICALS 15.0 295.0 43.5 125000.0
+GAS 15.0 295.0 43.5 125000.0
+
+Berth 5
+MINERAL_OILS 8.0 135.0 22.0 6000.0
+MINERAL_OILS 5.8 135.0 17.5 7500.0
+
+Berth 6
+MINERAL_OILS 6.6 125.0 17.5 4550.0
+MINERAL_OILS 6.6 125.0 17.5 5500.0
+
+Berth 7
+GAS 13.0 240.0 33.5 65000.0
+CHEMICALS 13.0 240.0 33.5 65000.0
+
+Berth 8
+GAS 4.4 95.0 13.5 2000.0
+CHEMICALS 4.4 95.0 13.5 2000.0
+
+Berth 9
+MINERAL_OILS 8.0 130.0 20.0 8000.0
+MINERAL_OILS 5.2 135.0 21.52 9200.0
+MINERAL_OILS 8.0 135.0 20.0 8000.0
+CHEMICALS 8.0 130.0 20.0 8000.0
+CHEMICALS 5.2 135.0 21.52 9200.0
+CHEMICALS 8.0 135.0 20.0 8000.0
+GAS 8.0 130.0 20.0 8000.0
+GAS 5.2 135.0 21.52 9200.0
+GAS 8.0 135.0 20.0 8000.0
+
+Berth 10
+MINERAL_OILS 11.5 242.0 36.0 65000.0
+MINERAL_OILS 12.0 242.0 32.0 65000.0
+MINERAL_OILS 12.5 242.0 28.0 65000.0
+
+Distances between opposite berths (0=Infinity):
+0	0	92	92	0	0	0	0	0	0	0	
+0	0	92	92	0	0	0	0	0	0	0	
+92	92	0	0	0	0	0	0	0	0	0	
+92	92	0	0	0	0	0	0	0	0	0	
+0	0	0	0	0	0	0	129	196	196	0	
+0	0	0	0	0	0	0	129	196	196	0	
+0	0	0	0	0	0	0	0	0	0	0	
+0	0	0	0	129	129	0	0	0	0	0	
+0	0	0	0	196	196	0	0	0	0	0	
+0	0	0	0	196	196	0	0	0	0	0	
+0	0	0	0	0	0	0	0	0	0	0	
+
+Distances between adjacent berths (0=Infinity):
+0	140	0	0	0	0	0	0	0	0	0	
+140	0	0	0	0	0	0	0	0	0	0	
+0	0	0	187	0	0	0	0	0	0	0	
+0	0	187	0	0	0	0	0	0	0	0	
+0	0	0	0	0	187	0	0	0	0	0	
+0	0	0	0	187	0	0	0	0	0	0	
+0	0	0	0	0	0	0	0	0	0	0	
+0	0	0	0	0	0	0	0	75	0	0	
+0	0	0	0	0	0	0	75	0	160	0	
+0	0	0	0	0	0	0	0	160	0	0	
+0	0	0	0	0	0	0	0	0	0	0	
+
+Berths blocked by lists of other berths:
+
+
+Special rules:
+Format: Rule	Jetty	ShipType	Dimension Type	Rule Type	Factor Ship1	Factor Ship2	Limit
+1	4	ALL	DWT	Moored	0	1	30000	
+2	7	ALL	LOA	Moored	0	1	135	
+3	4	ALL	DWT	Moored	0	1	20000	
+4	7	ALL	DWT	Moored	0	1	20000	
+10	5	ALL	LOA	Moored	0	1	0	
+11	3	ALL	LOA	Moored	0	1	0	
+12	0	ALL	LOA	Moored	0	1	0	
+13	0	ALL	LOA	Moored	0	1	0	
+14	3	ALL	LOA	Moored	0	1	0	
+16	0	ALL	LOA	Moored	0	1	0	
+17	2	ALL	LOA	Moored	0	1	0	
+20	3	ALL	LOA	Moored	0	1	0	
+21	2	ALL	LOA	Moored	0	1	0	
+22	6	ALL	LOA	Moored	0	1	100	
+23	7	ALL	LOA	Moored	0	1	200	
+24	6	ALL	LOA	Moored	0	1	100	
+25	6	ALL	LOA	Moored	0	1	135	
+26	7	ALL	LOA	Moored	0	1	200	
+27	6	ALL	LOA	Moored	0	1	125	
+28	6	ALL	LOA	Moored	0	1	135	
+29	7	ALL	LOA	Moored	0	1	150	
+
+
+Composite rules:
+CompatibilityRule	ShipType	Dimension Type	Compatibility Type	Min	Max	Jetties	Independent Rules	Dependent Rules
+1	ALL	LOA	Moored	135	Inf	7	1	
+2	ALL	DWT	Moored	30000	Inf	4	2	
+3	ALL	DWT	Moored	20000	30000	7	3	
+4	ALL	DWT	Moored	20000	30000	4	4	
+9	ALL	LOA	Sailing	0	Inf	6	10	
+11	ALL	LOA	Moored	135	Inf	0	11	
+12	ALL	LOA	Moored	135	Inf	3	12	
+13	ALL	LOA	Sailing	0	Inf	2		13,14	
+14	ALL	LOA	Sailing	0	Inf	1		13,14	
+16	ALL	LOA	Sailing	0	Inf	2		16,17	
+18	ALL	LOA	Moored	0	Inf	0		20,21	
+19	ALL	LOA	Moored	200	Inf	7	22	
+20	ALL	LOA	Moored	100	Inf	6	23	
+21	ALL	LOA	Moored	150	200	7	24
+24	ALL	LOA	Moored	0	150	7	27
+25	ALL	LOA	Moored	125	Inf	6	29	
+
+Ships -----------------------------------------------------------------------
+Format: Type Draft Length Width DWT Arrival Des_depart Manoeuvring_time Cost_Wait Cost_Delay Process_times_in_berths(0=Incompatible)
+CHEMICALS 9.63 123.87 26.48 2008.46 0.0 0.0 0 0 1 17 0 0 0 20 0 0 12 0 0 0 
+MINERAL_OILS 4.01 106.06 12.65 3907.64 2.0 2.0 0 0 1 0 0 11 9 13 13 9 0 0 9 13 
+MINERAL_OILS 5.52 102.64 18.6 4502.95 3.0 3.0 0 0 1 0 0 14 18 17 20 0 0 0 11 13 
+MINERAL_OILS 4.2 132.06 18.68 5334.66 3.0 3.0 0 0 1 0 0 0 17 18 16 0 0 0 17 15 
+CHEMICALS 5.97 110.89 12.7 246.67 5.0 5.0 0 0 1 36 44 0 0 49 0 0 56 0 31 0 
+MINERAL_OILS 6.91 112.89 13.3 4281.38 15.0 15.0 0 0 1 0 0 0 7 6 6 0 0 0 10 8 
+GAS 7.6 113.28 17.59 5026.45 16.0 16.0 0 0 1 5 0 0 0 5 0 0 8 0 7 0 
+CHEMICALS 9.87 174.81 18.73 2175.96 19.0 19.0 0 0 1 27 0 0 0 14 0 0 16 0 0 0 
+CHEMICALS 5.37 80.43 17.72 1833.24 19.0 19.0 0 0 1 18 16 0 0 18 0 0 25 0 24 0 
+MINERAL_OILS 7.38 227.42 27.43 27755.19 23.0 23.0 0 0 1 0 0 0 5 5 0 0 0 0 0 4 

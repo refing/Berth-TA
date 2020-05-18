@@ -11,6 +11,7 @@ package taberth;
  * @author refing
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,26 +21,34 @@ public class Mainprog {
         
         ArrayList<String[]> arrship = new ArrayList<>();
         ArrayList<Ship> listship = new ArrayList<>();
-        ArrayList<String[]> arrberth = new ArrayList<>();
-        ArrayList<Berth> listberth = new ArrayList<>();
-        ArrayList<BerthTrans> listbertha = new ArrayList<>();
         
-//        String file = "src/instancetest/problem_10_vessels_1.txt";
-        String file = "src/instance/problem_100_vessels_0.txt";
+        File[] files = new File("src/instance/").listFiles();
+        for (int i = 0; i < files.length; i++) {
+            String filename = files[i].getName().substring(0, files[i].getName().length() - 4);
+            String filepath = files[i].getPath();
+            
+//            System.out.println(filename);
+//            System.out.println(filepath);
+        }
         
-        ReadFile read = new ReadFile(file, arrship, listship, arrberth, listberth, listbertha);
-        InitSolution init = new InitSolution(listship, listberth, listbertha);
+        String filename = files[0].getName().substring(0, files[0].getName().length() - 4);
+        String filepath = files[0].getPath();
+        
+        ReadFile read = new ReadFile(filepath, arrship, listship);
+        InitSolution init = new InitSolution(listship);
         
         System.out.println("");
         System.out.println("cost initial solution = "+Util.cost(init.initialsol));
         System.out.println("");
-        
-        System.out.println("cost initial "+Util.cost(init.listship));
-        System.out.println("M initial "+init.M);
-        
+//        
+//        System.out.println("cost initial "+Util.cost(init.listship));
+////        System.out.println("M initial "+init.M);
+//        
         Heuristic heur = new Heuristic(init.initialsol);
         System.out.println("cost initial "+Util.cost(heur.initsol));
         System.out.println("heur");
+//        
+//        Util.export(init.listship, filename);
 //        heur.hill();
 
 //        heur.tesswap();
@@ -47,6 +56,7 @@ public class Mainprog {
 //          heur.ruincreate2(init.initialsol);
 //        heur.sementaragd();
             heur.ilsgd();
+            Util.exportstat(init.initialsol, heur.hilsol, heur.ilssol, filename);
 //        System.out.println("cke hc ils = " + Util.cekhc(heur.ilssol));
 //        
 //        heur.gd();
@@ -86,5 +96,15 @@ public class Mainprog {
         
         
     }
+    public static void showFiles(File[] files) {
+    for (File file : files) {
+        if (file.isDirectory()) {
+            System.out.println("Directory: " + file.getName());
+            showFiles(file.listFiles()); // Calls same method again.
+        } else {
+            System.out.println("File: " + file.getName());
+        }
+    }
+}
     
 }
