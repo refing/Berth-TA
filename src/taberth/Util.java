@@ -157,9 +157,9 @@ public class Util {
         }
         return cek4;
     }
-    public static void export(ArrayList<Ship> listfinal, String filename){
+    public static void export(ArrayList<Ship> listfinal, String filename, int run){
         try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_solution"+".txt"); 
+            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_solution_"+run+".txt"); 
             fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"); 
             fw.write("\n"); 
             for (int i = 0; i <listfinal.size(); i++) {
@@ -174,12 +174,12 @@ public class Util {
         }    
             System.out.println("File "+filename+".txt berhasil disimpan di D");    
     }
-    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename){
+    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename, int run){
         try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\stat.txt"); 
-            fw.write("filename"+";"+"cost init"+";"+"cost hc"+";"+"cost ils"); 
-            fw.write("\n"); 
-            fw.write(filename+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils)); 
+            FileWriter fw=new FileWriter("D:\\hasil\\stat.txt", true); 
+            
+            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils));
+            fw.write("\n");
 //            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
             fw.close();    
         } catch(Exception e){

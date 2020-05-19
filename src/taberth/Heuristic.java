@@ -134,55 +134,66 @@ public class Heuristic {
            
     }
     public void gd(){
-        //initsol
-        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
-        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
-        
-        int cost1 = 0;
-        int cost2 = 0;
-        int estimatedquality = 0;
-        double level = Util.cost(sbest);
-        double decayrate = 0;
-        int iteration = 0;
-        int maxiteration = 10000;
-        
-        do {
-            
-            iteration++;
-            //create neigborhood
-            do {
-                shift(stemp);
-            } while (!Util.cekhc(stemp));
+            ArrayList<Ship> sbestgd = Util.cloneList(initsol); //sbestnya gd
+            ArrayList<Ship> stempgd = Util.cloneList(initsol); //stempnya gd
+            ArrayList<Ship> bestest = Util.cloneList(initsol);
+            Random rn = new Random();
+            int maxiteration = 1000;
+            int bbest = Util.cost(bestest);
+            int cost1 = Util.cost(sbestgd);
+            int cost2 = 0;
+            int level = 0;
+            int decayrate = 1;
+            //great deluge
+            for (int j = 0; j < maxiteration; j++) {
+                int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
+                switch(numb){
+                    case(0):
+                        do {
+                            shift(stempgd);
+                        } while (!Util.cekhc(stempgd));
+                        break;
+                    case(1):
+                        do {
+                            swap(stempgd);
+                        } while (!Util.cekhc(stempgd));
+                        break;
+                    case(2):
+                        do {
+                    try {
+                        ruincreate(stempgd);
+                    } catch (CloneNotSupportedException ex) {
+                        Logger.getLogger(Heuristic.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                        } while (!Util.cekhc(stempgd));
+                        break;
+                }
+                
+                //calculate cost
+                cost2 = Util.cost(stempgd); //yang baru dishake
 
-            //calculate cost
-            cost1 = Util.cost(sbest);
-            cost2 = Util.cost(stemp);
-
-            //init level = cost terbaik
-            //estimated qualiity = cost2 - cost1
-            //decay rate = estimated quality/number of iteration
-            estimatedquality=cost2-cost1;
-            decayrate = estimatedquality/maxiteration;
-
-            //kalo improve, update best local solution and level
-            if (cost2<cost1) {
-//                cost1=cost2;
-                sbest = new ArrayList<Ship>(stemp);
-                level = cost2;
-            }else if (cost2<=level) {
-//                cost1=cost2;
-                sbest = new ArrayList<Ship>(stemp);
-            }else
-                stemp = new ArrayList<Ship>(sbest);
-            //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
-            level=level-decayrate;
-
-            //stop criteria
-            System.out.println(iteration+" cost "+cost2);
-        } while (!(iteration==maxiteration));
-
-        this.gdsol=sbest;
-        System.out.println("cost : "+cost1);
+                //init level = cost terbaik
+                //BEST OF THE BEBST
+                if (cost2<bbest) {
+                    bbest=cost2;
+                    bestest = Util.cloneList(stempgd);
+                }
+                //kalo improve, update best local solution and level
+                if (cost2<cost1) {
+                    cost1=cost2;
+                    sbestgd = Util.cloneList(stempgd);
+                    level = cost2;
+                }else if (cost2<=level) {
+                    cost1=cost2;
+                    sbestgd = Util.cloneList(stempgd);
+                }else
+                    stempgd = Util.cloneList(sbestgd);
+                //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
+                level=level-decayrate;
+                System.out.println(j+" cost gd "+cost2);
+            }
+            System.out.println("bestest cost: "+bbest);
+            this.gdsol=Util.cloneList(bestest);
         
     }
     public void ilsgd2(){
@@ -238,7 +249,7 @@ public class Heuristic {
             }
             System.out.println(i+" penalty best "+penalty1);
         }
-        System.out.println(" penalty best "+penalty1);
+//        System.out.println(" penalty best "+penalty1);
         this.hilsol=Util.cloneList(sbest);
     }
     public void ilsgd(){
@@ -257,6 +268,7 @@ public class Heuristic {
         
         int costils = 0;
         int costgd = 0;
+        int costbest = 0;
         
         int bbest = 0;
         
@@ -312,8 +324,9 @@ public class Heuristic {
         
         //local search pake great deluge pake local optima baru dan di ils
         ArrayList<Ship> perturb = Util.cloneList(sbest);
-        ArrayList<Ship> initperturb = Util.cloneList(sbest);
-        costils = Util.cost(initperturb);
+        ArrayList<Ship> bestperturb = Util.cloneList(sbest);
+        costils = Util.cost(perturb);
+        costbest = Util.cost(bestperturb);
         for (int i = 0; i < maxiteration; i++) {
             
         //perturb
@@ -324,7 +337,7 @@ public class Heuristic {
                     Logger.getLogger(Heuristic.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } while (!Util.cekhc(perturb));
-            
+//            System.out.println(i+"pre perturb "+Util.cost(perturb));
             
             ArrayList<Ship> sbestgd = Util.cloneList(perturb); //sbestnya gd
             ArrayList<Ship> stempgd = Util.cloneList(perturb); //stempnya gd
@@ -361,10 +374,7 @@ public class Heuristic {
 
                 //init level = cost terbaik
                 //BEST OF THE BEBST
-                if (cost2<bbest) {
-                    bbest=cost2;
-                    bestest = Util.cloneList(stempgd);
-                }
+                
                 //kalo improve, update best local solution and level
                 if (cost2<cost1) {
                     cost1=cost2;
@@ -375,22 +385,32 @@ public class Heuristic {
                     sbestgd = Util.cloneList(stempgd);
                 }else
                     stempgd = Util.cloneList(sbestgd);
+                if (cost2<bbest) {
+                    bbest=cost2;
+                    bestest = Util.cloneList(stempgd);
+                }
                 //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
                 level=level-decayrate;
-//                System.out.println(j+" cost gd "+cost2);
+                
             }
-            
+//            System.out.println(i+" cost gd "+bbest);
             costgd = Util.cost(bestest);
             //bandingkan hasil gd dan perturb awal
+            
             if (costgd<costils) {
                 costils=costgd;
                 perturb = Util.cloneList(bestest);
-                System.out.println(i+"change"+costils);
+//                System.out.println(i+"change"+costils);
             }
-            System.out.println(i+" cost ils "+costils);
+            if (costils<costbest) {
+                costbest=costils;
+                bestperturb=Util.cloneList(perturb);
+            }
+//            System.out.println(i+" cost ils "+costils);
             
-        this.ilssol=Util.cloneList(perturb);
+        
         }
+        this.ilssol=Util.cloneList(bestperturb);
         System.out.println("cost hc "+penalty1);
         System.out.println("cost ilsgd "+costils);
         
@@ -988,9 +1008,11 @@ public class Heuristic {
         Util.cekhc(fix);
 //        System.out.println(fix.size());
         
+//        listship = Util.cloneList(fix);
         listship.clear();
         listship.addAll(fix);
 //        System.out.println("perturb alldone");
+//        return fix;
     }
     
     public void ruincreate(ArrayList<Ship> listship) throws CloneNotSupportedException{
