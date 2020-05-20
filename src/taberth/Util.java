@@ -174,11 +174,11 @@ public class Util {
         }    
             System.out.println("File "+filename+".txt berhasil disimpan di D");    
     }
-    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename, int run){
+    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename, int run, long start, long end, long best){
         try{    
             FileWriter fw=new FileWriter("D:\\hasil\\stat.txt", true); 
             
-            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils));
+            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils)+";"+start+";"+end+";"+best);
             fw.write("\n");
 //            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
             fw.close();    
@@ -187,4 +187,6 @@ public class Util {
         }    
             System.out.println("File berhasil disimpan di D");    
     }
+    
+    
 }

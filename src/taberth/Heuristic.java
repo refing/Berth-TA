@@ -26,6 +26,9 @@ public class Heuristic {
     ArrayList<Ship> ilssol;
     ArrayList<Ship> gdsol;
     ArrayList<Ship> hilsol;
+    long besttimer =0;
+    long startimer=0;
+    long endtimer=0;
     
     public Heuristic(ArrayList<Ship> initsol){
         this.initsol=initsol;
@@ -253,6 +256,10 @@ public class Heuristic {
         this.hilsol=Util.cloneList(sbest);
     }
     public void ilsgd(){
+        long starttimer = System.nanoTime();
+        long endtimer =0;
+        long besttimer=0;
+        
         ArrayList<Ship> sbest = Util.cloneList(initsol);
         ArrayList<Ship> stemp = Util.cloneList(initsol);
         
@@ -314,13 +321,13 @@ public class Heuristic {
             }else{
                 stemp = Util.cloneList(sbest);
             }
-            System.out.println(i+" penalty best "+penalty1);
+//            System.out.println(i+" penalty best "+penalty1);
         }
-        System.out.println(" penalty best "+penalty1);
+//        System.out.println(" penalty best "+penalty1);
         this.hilsol=Util.cloneList(sbest);
         
         System.out.println("");
-        System.out.println("great deluge ils");
+//        System.out.println("great deluge ils");
         
         //local search pake great deluge pake local optima baru dan di ils
         ArrayList<Ship> perturb = Util.cloneList(sbest);
@@ -405,6 +412,8 @@ public class Heuristic {
             if (costils<costbest) {
                 costbest=costils;
                 bestperturb=Util.cloneList(perturb);
+                besttimer   = System.nanoTime();
+//                System.out.println(besttimer);
             }
 //            System.out.println(i+" cost ils "+costils);
             
@@ -413,8 +422,11 @@ public class Heuristic {
         this.ilssol=Util.cloneList(bestperturb);
         System.out.println("cost hc "+penalty1);
         System.out.println("cost ilsgd "+costils);
-        
-        
+        endtimer   = System.nanoTime();
+        long totaltimer = endtimer - starttimer;
+        this.startimer=starttimer;
+        this.endtimer = endtimer;
+        this.besttimer=besttimer;
         //acceptance criteria ils bandinginnya 
         
         

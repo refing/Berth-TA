@@ -54,10 +54,10 @@ public class ReadFile {
         
             
         
-        System.out.println("SHIPS");
-        for (String[] strArr : arrship) {
-                System.out.println(Arrays.toString(strArr));
-        }
+//        System.out.println("SHIPS");
+//        for (String[] strArr : arrship) {
+//                System.out.println(Arrays.toString(strArr));
+//        }
         
         //loop semua ship i
         //bikin objek ship dengan id i

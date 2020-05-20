@@ -30,7 +30,7 @@ public class Mainprog {
 //        }
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
-                ArrayList<String[]> arrship = new ArrayList<>();
+            ArrayList<String[]> arrship = new ArrayList<>();
             ArrayList<Ship> listship = new ArrayList<>();
 
             File[] files = new File("src/instance/").listFiles();
@@ -41,16 +41,16 @@ public class Mainprog {
             ReadFile read = new ReadFile(filepath, arrship, listship);
             InitSolution init = new InitSolution(listship);
 
-            System.out.println("");
-            System.out.println("cost initial solution = "+Util.cost(init.initialsol));
-            System.out.println("");
+//            System.out.println("");
+//            System.out.println("cost initial solution = "+Util.cost(init.initialsol));
+//            System.out.println("");
             Heuristic heur = new Heuristic(init.initialsol);
             System.out.println("cost initial "+Util.cost(heur.initsol));
-            System.out.println("heur");
+//            System.out.println("heur");
             
             heur.ilsgd();
             Util.export(heur.ilssol, filename,j);
-            Util.exportstat(heur.initsol, heur.hilsol, heur.ilssol, filename,j);
+            Util.exportstat(heur.initsol, heur.hilsol, heur.ilssol, filename,j,heur.startimer,heur.endtimer,heur.besttimer);
             System.out.println(filename + " run ke "+j);
             }
         }
