@@ -96,20 +96,24 @@ public class Util {
                         opp=(listship.get(i).getWidth())+(listship.get(j).getWidth())+ReadFile.safetyopposite > ReadFile.oppositematrix[listship.get(i).getBerth()][listship.get(j).getBerth()];
                     }
                     if (adj||opp) {
-                        if(listship.get(j).getTi()>=listship.get(i).getRi()){
-                            sigmasum++;
-                        }
+                        cek8 = false;
+                        break;
+//                        if(listship.get(j).getTi()>=listship.get(i).getRi()){
+//                            sigmasum++;
+//                        }
+                    }else{
+                        cek8=true;
                     }
 
             }
             
     //        System.out.println("sigmasum "+sigmasum);
 
-            if(sigmasum>=mib){
-                cek8 = false;
-            }else{
-                cek8=true;
-            }
+//            if(sigmasum>=mib){
+//                cek8 = false;
+//            }else{
+//                cek8=true;
+//            }
 //            if (oppadj(listship)==true) {
 //                cek8=false;
 //                System.out.println(i+" Xconstrain 8");

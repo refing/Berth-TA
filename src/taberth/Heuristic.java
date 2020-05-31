@@ -286,7 +286,7 @@ public class Heuristic {
         
         Random rn = new Random();
                 
-        int maxiteration = 10;
+        int maxiteration = 50000;
         
         double penalty1 = Util.cost(sbest);
         double penalty2 = 0;
@@ -307,7 +307,7 @@ public class Heuristic {
         long hctimerstart   = System.nanoTime();
         this.hctimerstart = hctimerstart;
         //hill climbing 1 cari local optima 1
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < maxiteration; i++) {
             
 //            stemp=sbest;
 //            swap(stemp);
@@ -363,7 +363,7 @@ public class Heuristic {
         ArrayList<Ship> bestperturb = Util.cloneList(sbest);
         costils = Util.cost(perturb);
         costbest = Util.cost(bestperturb);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < maxiteration; i++) {
             System.out.println("ils "+i);
         //perturb
             do {
@@ -381,7 +381,7 @@ public class Heuristic {
             bbest = Util.cost(bestest);
             cost1 = Util.cost(sbestgd);
             //great deluge
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 20; j++) {
                 int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
                 switch(numb){
                     case(0):
