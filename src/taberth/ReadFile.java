@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,7 +24,15 @@ public class ReadFile {
 //    ArrayList<Berth> listberth;
 //    
 //    ArrayList<BerthTrans> listbertha;
-    public ReadFile(String file, ArrayList<String[]> arrship,ArrayList<Ship> listship)throws IOException {
+    ArrayList<String[]> arrship = new ArrayList<>();
+    ArrayList<Ship> listship = new ArrayList<>();
+    static int totalship=0;
+    static int totalberth=0;
+    static int safetyadjacent=0;
+    static int safetyopposite=0;
+    static int [][] adjacentmatrix = new int[11][11];
+    static int [][] oppositematrix = new int[11][11];
+    public ReadFile(String file)throws IOException {
 //        this.arrberth=arrberth;
 //        this.arrship=arrship;
 //        this.listberth=listberth;
@@ -38,9 +45,28 @@ public class ReadFile {
             FileReader fcr = new FileReader(file);
             BufferedReader cr = new BufferedReader(fcr);
             
-
+            ArrayList<String[]> opptemp = new ArrayList<String[]>();
+            ArrayList<String[]> adjtemp = new ArrayList<String[]>();
+            
             while ((text = cr.readLine()) != null) {
                 lineNumber++;
+                
+                if(lineNumber == 3){
+                    String[] textarr = text.split(" ");
+                    totalship=Integer.parseInt(textarr[0]);
+                    totalberth=Integer.parseInt(textarr[1]);
+                    safetyadjacent=Integer.parseInt(textarr[2]);
+                    safetyopposite=Integer.parseInt(textarr[3]);
+                }
+                
+                //tabel matrix opposite
+                else if(lineNumber >67 && lineNumber <79){
+                    opptemp.add(text.split("\t"));
+                }
+                //tabel matrix adjacent
+                else if(lineNumber >80 && lineNumber <92){
+                    adjtemp.add(text.split("\t"));
+                }
                 
                 
                 //tabel ship
@@ -51,7 +77,28 @@ public class ReadFile {
                 }
               }
             
-        
+            
+            
+            
+            for (int i = 0; i < opptemp.size(); i++) {
+                for (int j=0; j< opptemp.get(i).length;j++) {
+                    oppositematrix[i][j]=Integer.parseInt(opptemp.get(i)[j]);
+                }
+            } 
+            
+            for (int i = 0; i < adjtemp.size(); i++) {
+                for (int j=0; j< adjtemp.get(i).length;j++) {
+                    adjacentmatrix[i][j]=Integer.parseInt(adjtemp.get(i)[j]);
+                }
+            }   
+            
+//            for (int i = 0; i < oppositematrix.length; i++) {
+//                for (int j = 0; j < oppositematrix[i].length; j++) {
+//                    System.out.print(oppositematrix[i][j]+" ");
+//                }
+//                System.out.println("");
+//            }
+            
             
         
 //        System.out.println("SHIPS");

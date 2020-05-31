@@ -3,6 +3,7 @@ package taberth;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 /*
@@ -20,7 +21,7 @@ public class InitSolution {
     ArrayList<Ship> listship;
     ArrayList<Ship> initialsol;
 //    ArrayList<Ship> initialsol2;
-//    static int M = 0;
+    static int M = 0;
     
     public InitSolution(ArrayList<Ship> listship){
         this.listship=listship;
@@ -32,12 +33,13 @@ public class InitSolution {
             bertha.setHandlingtime(0);
             listbertha.add(bertha);
         }
-
+        
         int[] berthi = new int[listship.size()];
         
         int ti = 0;
         int ri = 0;
         int M = 0;
+        int ui = 0;
             
         //Sort ship by increasing arrival time
         listship.sort(Comparator.comparing(Ship::getArrival));
@@ -79,11 +81,13 @@ public class InitSolution {
             thisship.setHi(pilih.getHandlingtime());
             thisship.setRi(ri);
             
+            thisship.setUi(ri-(int)thisship.getDesDepart());
+            
 //            thisship.setRri(thisship.getRti()+thisship.getHi());    //wait
             thisship.setBerth(pilih.getId());
             
             M = ri;
-//            this.M=M;
+            this.M=M;
 //            System.out.println(i+". Mnow = " + M);
 
             //UPDATE RELEASE TIME DI AKIR
@@ -94,6 +98,74 @@ public class InitSolution {
         }
         this.initialsol= new ArrayList<>(listship);
     }    
+    
+    public void countagain2(ArrayList<Ship> listship){
+        ArrayList<BerthTrans> listberth2 = new ArrayList<BerthTrans>();
+        
+        
+        for (int i = 0; i < 11; i++) {
+            BerthTrans berth2 = new BerthTrans(i);
+            berth2.setReleasetime(0);
+            berth2.setHandlingtime(0);
+            listberth2.add(berth2);
+        }
+        
+        //Sort ship by increasing arrival time
+        listship.sort(Comparator.comparing(Ship::getArrival));
+        
+        //forloop
+        for (int i = 0; i < listship.size(); i++) {
+            
+            //set handling time per ship
+            Ship thisship = listship.get(i); //i
+            
+            
+            
+            for (int j = 0; j < listberth2.size(); j++) {
+                listberth2.get(j).setHandlingtime(thisship.getProcessTimes()[j]);
+            }
+            for (int j = 0; j < listberth2.size(); j++) {
+                if(thisship.getArrival()>=listberth2.get(j).getReleasetime())      //??????
+                    listberth2.get(j).setReleasetime(0);
+            }
+            
+            
+            BerthTrans pilih = listberth2.get(thisship.getBerth());
+            
+            int ti = 0;
+            int ri = 0;
+            
+            if(pilih.getReleasetime()>0){
+                thisship.setCostWait(pilih.getReleasetime()-(int)thisship.getArrival());
+                ti=pilih.getReleasetime();
+            }
+            if(pilih.getReleasetime()==0){
+                ti=(int)thisship.getArrival();
+            }  
+            
+//            System.out.println(i+". arr = "+thisship.getArrival()+" rel = "+pilih.getReleasetime()+" M="+m);
+//            System.out.println(i+". ti max = " + ti);
+//            if (ti>m) {
+//                System.out.println("THIS" + ti);
+//            }
+            thisship.setTi(ti);
+
+            ri = ti + pilih.getHandlingtime();
+            
+            thisship.setHi(pilih.getHandlingtime());
+            thisship.setRi(ri);
+
+            //UPDATE RELEASE TIME DI AKIR
+            listberth2.get(pilih.getId()).setReleasetime(ri);
+            //if arrival time udah selesai, release time reset jadi 0
+            //reset handling time --udah selalu direset di awal awal
+            
+           
+            
+        }
+    }
+    
+    
     
 //    public ArrayList<Ship> insol1(ArrayList<Ship> listship, ArrayList<BerthTrans> listbertha){
 //        int[] berthi = new int[listship.size()];

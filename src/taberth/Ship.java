@@ -24,12 +24,16 @@ public class Ship implements Cloneable{
     private int manouvTime;
     private int costWait;
     private int costDelay;
+    
+//    private int safeadj;
+//    private int safeopp;
     //private ArrayList <Integer> processTimes = new ArrayList<>();
-    private int [] processTimes = new int[11];
+    private int [] processTimes = new int[ReadFile.totalberth];
     
     private int ti;
     private int ri;
     private int hi;
+    private int ui;
     
     private int berth;
     
@@ -57,6 +61,7 @@ public class Ship implements Cloneable{
         this.ti=ship.ti;
         this.ri=ship.ri;
         this.hi=ship.hi;
+        this.ui=ship.ui;
         this.berth=ship.berth;
         
     }
@@ -199,6 +204,16 @@ public class Ship implements Cloneable{
         this.hi = hi;
     }
 
+    public int getUi() {
+        return ui;
+    }
+
+    public void setUi(int ui) {
+        this.ui = ui;
+    }
+    
+    
+
     public int getBerth() {
         return berth;
     }
@@ -207,6 +222,23 @@ public class Ship implements Cloneable{
         this.berth = berth;
     }
 
+//    public int getSafeadj() {
+//        return safeadj;
+//    }
+//
+//    public void setSafeadj(int safeadj) {
+//        this.safeadj = safeadj;
+//    }
+//
+//    public int getSafeopp() {
+//        return safeopp;
+//    }
+//
+//    public void setSafeopp(int safeopp) {
+//        this.safeopp = safeopp;
+//    }
+
+    
             
     
     

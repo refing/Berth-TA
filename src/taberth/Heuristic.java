@@ -29,6 +29,13 @@ public class Heuristic {
     long besttimer =0;
     long startimer=0;
     long endtimer=0;
+    long hctimerstart =0;
+    long hctimerend = 0;
+    long gdtimerstart = 0;
+    long gdtimerend = 0;
+    long gdbest = 0;
+    long hcbest = 0;
+    
     
     public Heuristic(ArrayList<Ship> initsol){
         this.initsol=initsol;
@@ -49,12 +56,13 @@ public class Heuristic {
     }
     
     public void hill(){
-        ArrayList<Ship> sbest = new ArrayList<Ship>(initsol);
-        ArrayList<Ship> stemp = new ArrayList<Ship>(initsol);
+        ArrayList<Ship> sbest = Util.cloneList(initsol);
+        ArrayList<Ship> stemp = Util.cloneList(initsol);
         
         double penalty1 = Util.cost(sbest);
+        System.out.println(""+penalty1);
         double penalty2 = 0;
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             
 //            stemp=sbest;
 //            swap(stemp);
@@ -62,22 +70,23 @@ public class Heuristic {
 //                System.out.println("invalid");
 //            }
             do {
-                swap(stemp);
+                shift(stemp);
             } while (!Util.cekhc(stemp));
             
             penalty2=Util.cost(stemp);
             if(penalty2 < penalty1){
                 penalty1 = penalty2;
-                sbest = new ArrayList<Ship>(stemp);
+                sbest = Util.cloneList(stemp);
 //                sbest.clear();
 //                sbest.addAll(stemp);
             }else{
-                stemp = new ArrayList<Ship>(sbest);
+                stemp = Util.cloneList(sbest);
 //                stemp.clear();
 //                stemp.addAll(sbest);
             }
             System.out.println(i+" penalty best "+penalty2);
         }
+        this.hilsol=Util.cloneList(sbest);
         System.out.println("best"+penalty1);
     }
     
@@ -147,6 +156,11 @@ public class Heuristic {
             int cost2 = 0;
             int level = 0;
             int decayrate = 1;
+            
+            bbest = Util.cost(bestest);
+            cost1 = Util.cost(sbestgd);
+            long gdtimerstart   = System.nanoTime();
+            this.gdtimerstart=gdtimerstart;
             //great deluge
             for (int j = 0; j < maxiteration; j++) {
                 int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
@@ -177,10 +191,7 @@ public class Heuristic {
 
                 //init level = cost terbaik
                 //BEST OF THE BEBST
-                if (cost2<bbest) {
-                    bbest=cost2;
-                    bestest = Util.cloneList(stempgd);
-                }
+                
                 //kalo improve, update best local solution and level
                 if (cost2<cost1) {
                     cost1=cost2;
@@ -191,11 +202,21 @@ public class Heuristic {
                     sbestgd = Util.cloneList(stempgd);
                 }else
                     stempgd = Util.cloneList(sbestgd);
+                if (cost2<bbest) {
+                    bbest=cost2;
+                    bestest = Util.cloneList(stempgd);
+                    long gdbest   = System.nanoTime();
+                    this.gdbest = gdbest;
+                }
                 //kalo ga improve, apakah kurang dari sama dengan level, kalo iya update bbest local
                 level=level-decayrate;
-                System.out.println(j+" cost gd "+cost2);
+                if (j%100==0) {
+                    System.out.println(j+" gd penalty best "+bbest);
+                }
             }
-            System.out.println("bestest cost: "+bbest);
+            long gdtimerend   = System.nanoTime();
+            this.gdtimerend=gdtimerend;
+//            System.out.println("bestest cost: "+bbest);
             this.gdsol=Util.cloneList(bestest);
         
     }
@@ -265,7 +286,7 @@ public class Heuristic {
         
         Random rn = new Random();
                 
-        int maxiteration = 100;
+        int maxiteration = 10;
         
         double penalty1 = Util.cost(sbest);
         double penalty2 = 0;
@@ -283,8 +304,10 @@ public class Heuristic {
         double level = Util.cost(sbest);
         double decayrate = 1;
         
+        long hctimerstart   = System.nanoTime();
+        this.hctimerstart = hctimerstart;
         //hill climbing 1 cari local optima 1
-        for (int i = 0; i < maxiteration; i++) {
+        for (int i = 0; i < 10; i++) {
             
 //            stemp=sbest;
 //            swap(stemp);
@@ -318,15 +341,21 @@ public class Heuristic {
             if(penalty2 < penalty1){
                 penalty1 = penalty2;
                 sbest = Util.cloneList(stemp);
+                long hcbest   = System.nanoTime();
+                this.hcbest=hcbest;
             }else{
                 stemp = Util.cloneList(sbest);
             }
-//            System.out.println(i+" penalty best "+penalty1);
+//            if (i%100==0) {
+//                System.out.println(i+" hc penalty best "+penalty1);
+//            }
+            System.out.println(i+" penalty best "+penalty1);
         }
+        long hctimerend   = System.nanoTime();
+        this.hctimerend=hctimerend;
 //        System.out.println(" penalty best "+penalty1);
         this.hilsol=Util.cloneList(sbest);
-        
-        System.out.println("");
+//        System.out.println("1hc done");
 //        System.out.println("great deluge ils");
         
         //local search pake great deluge pake local optima baru dan di ils
@@ -334,8 +363,8 @@ public class Heuristic {
         ArrayList<Ship> bestperturb = Util.cloneList(sbest);
         costils = Util.cost(perturb);
         costbest = Util.cost(bestperturb);
-        for (int i = 0; i < maxiteration; i++) {
-            
+        for (int i = 0; i < 3; i++) {
+            System.out.println("ils "+i);
         //perturb
             do {
                 try {
@@ -352,7 +381,7 @@ public class Heuristic {
             bbest = Util.cost(bestest);
             cost1 = Util.cost(sbestgd);
             //great deluge
-            for (int j = 0; j < maxiteration; j++) {
+            for (int j = 0; j < 10; j++) {
                 int numb=rn.nextInt(1); //reinforcement learning ntar masi pake sr
                 switch(numb){
                     case(0):
@@ -416,7 +445,9 @@ public class Heuristic {
 //                System.out.println(besttimer);
             }
 //            System.out.println(i+" cost ils "+costils);
-            
+            if (i%100==0) {
+                    System.out.println(i+" penalty best "+costils);
+                }
         
         }
         this.ilssol=Util.cloneList(bestperturb);
@@ -628,7 +659,7 @@ public class Heuristic {
             
             thisship.setHi(pilih.getHandlingtime());
             thisship.setRi(ri);
-
+            thisship.setUi(ri-(int)thisship.getDesDepart());
             //UPDATE RELEASE TIME DI AKIR
             listberth2.get(pilih.getId()).setReleasetime(ri);
             //if arrival time udah selesai, release time reset jadi 0
@@ -877,7 +908,7 @@ public class Heuristic {
         ArrayList<Ship> candidate = new ArrayList<>();
         //ruin
         Random rn = new Random();
-        int ruinfactor = 10;
+        int ruinfactor = 2;
         do {
             
 //            int berth= 0;
@@ -944,7 +975,7 @@ public class Heuristic {
 //        }
         
 //        System.out.println("size "+candidate.size());
-        
+//        
 //        System.out.println("recreate go");
         ArrayList<Ship> outputan = new ArrayList<Ship>();
         candidate.sort(Comparator.comparing(Ship::getArrival));
@@ -958,22 +989,34 @@ public class Heuristic {
                     //berth yang compat aja
 //                    System.out.println("j="+ j);
                     //list buat ngecek feasibblenya
-                    
-                    for (int l = 0; l < allberth.get(j).getDaftarship().size(); l++) {
+                    if (allberth.get(j).getDaftarship().size()>0) {
+//                        System.out.println("berth lebih dari 0");
+                        for (int l = 0; l < allberth.get(j).getDaftarship().size(); l++) {
 //                        System.out.println(j+" yang ada di berth ini = "+ map.get(j).get(l).getShipId());
-                        if (allberth.get(j).getDaftarship().size()>0) {
                             isi.add(allberth.get(j).getDaftarship().get(l));
+                        }
+                        Ship baru = (Ship)candidate.get(i).clone(); 
+                        baru.setBerth(j); //feasible position?? nyobain semua arrival nya ship?
+                        isi.add(baru);
+                        countagain(isi);
+                        if (Util.cekhc(isi)==true) {
+                            baru.setHi(baru.getProcessTimes()[j]);
+                            feasible.add(baru);
+                        }
                     }
-                    }
-                    Ship baru = (Ship)candidate.get(i).clone(); 
-                    
-                    baru.setBerth(j);
-                    isi.add(baru);
-                    countagain(isi);
-                    if (Util.cekhc(isi)==true) {
+                    else if (allberth.get(j).getDaftarship().size()==0) {
+//                        System.out.println("berth 0");
+                        Ship baru = (Ship)candidate.get(i).clone(); 
+                        baru.setBerth(j); //feasible position?? nyobain semua arrival nya ship?
+                        isi.add(baru);
+                        countagain(isi);
                         baru.setHi(baru.getProcessTimes()[j]);
                         feasible.add(baru);
                     }
+                    
+                    
+                    
+
 //                    for (int k = 0; k < feasible.size(); k++) {
 //                        System.out.println("isi feasible "+feasible.get(k).getShipId());
 //                    }
@@ -990,13 +1033,19 @@ public class Heuristic {
 //                System.out.println(z+". ship "+feasible.get(z).getShipId()+" beretnya "+feasible.get(z).getBerth()+" hi "+feasible.get(z).getHi());
 //            }
 //            insert vessel ke yang slightly worst
-            if (feasible.size()<2) {
+            if (feasible.size()==1) {
+//                System.out.println("ambil karena 1");
                 outputan.add(feasible.get(0));
                 allberth.get(feasible.get(0).getBerth()).getDaftarship().add(feasible.get(0));
-            }else{
+            }
+            else{
+//                System.out.println("ambil karena lebih dari 1");
                 outputan.add(feasible.get(1));
                 allberth.get(feasible.get(1).getBerth()).getDaftarship().add(feasible.get(1));
             }
+//            else if(feasible.size()==0){
+//                
+//            }
         }
 //        System.out.println(" ");
 //        for (int k = 0; k < outputan.size(); k++) {
@@ -1017,7 +1066,8 @@ public class Heuristic {
 //        for (int i = 0; i < fix.size(); i++) {
 //            System.out.println("Ship "+fix.get(i).getShipId()+" berth "+fix.get(i).getBerth()+" arrival "+fix.get(i).getArrival()+ " depart "+fix.get(i).getRi());
 //        }
-        Util.cekhc(fix);
+//        System.out.println("hc? "+Util.cekhc(fix));
+//        System.out.println("hc? "+Util.cekhc(initsol));
 //        System.out.println(fix.size());
         
 //        listship = Util.cloneList(fix);
