@@ -14,12 +14,12 @@ import java.util.ArrayList;
  */
 public class Berth {
     private int idBerth;
-    private int idAsli;
-    private String type;
-    private double maxDraft;
-    private double maxLength; 
-    private double maxWidth;
-    private double maxDWT;
+//    private int idAsli;
+//    private String type;
+//    private double maxDraft;
+//    private double maxLength; 
+//    private double maxWidth;
+//    private double maxDWT;
     private ArrayList<Ship> daftarship = new ArrayList<Ship>();
 
     public Berth(int idBerth) {
@@ -42,53 +42,53 @@ public class Berth {
         this.daftarship = daftarship;
     }
     
-    public int getIdAsli() {
-        return idAsli;
-    }
-
-    public void setIdAsli(int idAsli) {
-        this.idAsli = idAsli;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public double getMaxDraft() {
-        return maxDraft;
-    }
-
-    public void setMaxDraft(double maxDraft) {
-        this.maxDraft = maxDraft;
-    }
-
-    public double getMaxLength() {
-        return maxLength;
-    }
-
-    public void setMaxLength(double maxLength) {
-        this.maxLength = maxLength;
-    }
-
-    public double getMaxWidth() {
-        return maxWidth;
-    }
-
-    public void setMaxWidth(double maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-
-    public double getMaxDWT() {
-        return maxDWT;
-    }
-
-    public void setMaxDWT(double maxDWT) {
-        this.maxDWT = maxDWT;
-    }
+//    public int getIdAsli() {
+//        return idAsli;
+//    }
+//
+//    public void setIdAsli(int idAsli) {
+//        this.idAsli = idAsli;
+//    }
+//
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//
+//    public double getMaxDraft() {
+//        return maxDraft;
+//    }
+//
+//    public void setMaxDraft(double maxDraft) {
+//        this.maxDraft = maxDraft;
+//    }
+//
+//    public double getMaxLength() {
+//        return maxLength;
+//    }
+//
+//    public void setMaxLength(double maxLength) {
+//        this.maxLength = maxLength;
+//    }
+//
+//    public double getMaxWidth() {
+//        return maxWidth;
+//    }
+//
+//    public void setMaxWidth(double maxWidth) {
+//        this.maxWidth = maxWidth;
+//    }
+//
+//    public double getMaxDWT() {
+//        return maxDWT;
+//    }
+//
+//    public void setMaxDWT(double maxDWT) {
+//        this.maxDWT = maxDWT;
+//    }
 
     
     

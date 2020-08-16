@@ -25,6 +25,7 @@ public class Util {
         boolean cek7 = false;
         boolean cek8 = false;
         boolean cek9 = false;
+        boolean cek10 = false;
         boolean valid = false;
         for (int i = 0; i < listship.size(); i++) {
             //constrain ti >= ai
@@ -92,10 +93,7 @@ public class Util {
                     if (ReadFile.adjacentmatrix[listship.get(i).getBerth()][listship.get(j).getBerth()]>0) {
                         adj=(listship.get(i).getLength()/2)+(listship.get(j).getLength()/2)+ReadFile.safetyadjacent > ReadFile.adjacentmatrix[listship.get(i).getBerth()][listship.get(j).getBerth()];
                     }
-                    if (ReadFile.oppositematrix[listship.get(i).getBerth()][listship.get(j).getBerth()]>0) {
-                        opp=(listship.get(i).getWidth())+(listship.get(j).getWidth())+ReadFile.safetyopposite > ReadFile.oppositematrix[listship.get(i).getBerth()][listship.get(j).getBerth()];
-                    }
-                    if (adj||opp) {
+                    if (adj) {
                         cek8 = false;
                         break;
 //                        if(listship.get(j).getTi()>=listship.get(i).getRi()){
@@ -103,6 +101,23 @@ public class Util {
 //                        }
                     }else{
                         cek8=true;
+                    }
+
+            }
+            for (int j = i+1; j < listship.size(); j++) {
+
+                    
+                    if (ReadFile.oppositematrix[listship.get(i).getBerth()][listship.get(j).getBerth()]>0) {
+                        opp=(listship.get(i).getWidth())+(listship.get(j).getWidth())+ReadFile.safetyopposite > ReadFile.oppositematrix[listship.get(i).getBerth()][listship.get(j).getBerth()];
+                    }
+                    if (opp) {
+                        cek9 = false;
+                        break;
+//                        if(listship.get(j).getTi()>=listship.get(i).getRi()){
+//                            sigmasum++;
+//                        }
+                    }else{
+                        cek9=true;
                     }
 
             }
@@ -122,9 +137,9 @@ public class Util {
 //            }
             //constrain ti!=0,ri!=0,ui!=0
             if (listship.get(i).getTi()>=0&&listship.get(i).getRi()>=0&&listship.get(i).getUi()>=0) {
-                cek9=true;
+                cek10=true;
             }else{
-                cek9=false;
+                cek10=false;
                 System.out.println(i+" Xconstrain 9");
 //                System.out.println("ship "+listship.get(i).getShipId());
 //                System.out.println("berth "+listship.get(i).getBerth());
@@ -135,7 +150,7 @@ public class Util {
         }
         
         
-        if(cek2&&cek3&&cek4&&cek5&&cek6&&cek7&&cek8&&cek9){
+        if(cek2&&cek3&&cek4&&cek5&&cek6&&cek7&&cek8&&cek9&&cek10){
             valid=true;
         }else
             valid=false;
@@ -361,23 +376,40 @@ public class Util {
         System.out.println("total cost = " + cost(listship));  
     }
     
-    public static void export(ArrayList<Ship> listfinal, String filename, int run){
-        try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_solution_"+run+".txt"); 
-            fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"); 
-            fw.write("\n"); 
-            for (int i = 0; i <listfinal.size(); i++) {
-                fw.write(listfinal.get(i).getShipId()+"\t\t"+listfinal.get(i).getBerth()+"\t\t"+(int)listfinal.get(i).getArrival()+"\t\t"+listfinal.get(i).getRi()+"\t\t"+listfinal.get(i).getHi());
-                fw.write("\n"); 
-            }
-            fw.write("cost : "+Util.cost(listfinal)); 
-             
+    
+    
+    public static void trajectory2(ArrayList<Double> trj, String filename, String alg){
+        try{  
+            FileWriter fw=new FileWriter("D:\\hasil\\trajectory\\"+filename+"\\"+alg+"\\"+filename+"_traj_.txt"); 
+            
+                for (int j = 0; j < trj.size(); j++) {
+                    fw.write(""+trj.get(j));
+                    fw.write("\n");
+                }
+//                fw.write(";");
+            
+            fw.write("\n");
+//            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
             fw.close();    
         } catch(Exception e){
         	System.out.println(e);
         }    
-            System.out.println("File "+filename+".txt berhasil disimpan di D");    
+            System.out.println("File berhasil disimpan di D");  
     }
+    public static void exportstatils(ArrayList<Ship> initial, ArrayList<Ship> ils, String filename, int run, long start, long end, long best){
+        try{    
+            FileWriter fw=new FileWriter("D:\\hasil\\new\\stat.txt", true); 
+            
+            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(ils)+";"+start+";"+end+";"+best);
+            fw.write("\n");
+//            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
+            fw.close();    
+        } catch(Exception e){
+        	System.out.println(e);
+        }    
+            System.out.println("File berhasil disimpan di D");    
+    }
+    
     public static void export2(ArrayList<Ship> listfinal, String filename, int run){
         try{    
             FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_all_"+run+".txt"); 
@@ -395,45 +427,12 @@ public class Util {
         }    
             System.out.println("File "+filename+".txt berhasil disimpan di D");    
     }
-    public static void exporthc(ArrayList<Ship> listfinal, String filename, int run){
+    
+    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> sol, String filename, int run, long start, long end, long best, String alg){
         try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_hill_"+run+".txt"); 
-            fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"+"\t"+"Ti"); 
-            fw.write("\n"); 
-            for (int i = 0; i <listfinal.size(); i++) {
-                fw.write(listfinal.get(i).getShipId()+"\t\t"+listfinal.get(i).getBerth()+"\t\t"+(int)listfinal.get(i).getArrival()+"\t\t"+listfinal.get(i).getRi()+"\t\t"+listfinal.get(i).getHi()+"\t\t"+listfinal.get(i).getTi());
-                fw.write("\n"); 
-            }
-            fw.write("cost : "+Util.cost(listfinal)); 
-             
-            fw.close();    
-        } catch(Exception e){
-        	System.out.println(e);
-        }    
-            System.out.println("File "+filename+".txt berhasil disimpan di D");    
-    }
-    public static void exportgd(ArrayList<Ship> listfinal, String filename, int run){
-        try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"_gd_"+run+".txt"); 
-            fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"+"\t"+"Ti"); 
-            fw.write("\n"); 
-            for (int i = 0; i <listfinal.size(); i++) {
-                fw.write(listfinal.get(i).getShipId()+"\t\t"+listfinal.get(i).getBerth()+"\t\t"+(int)listfinal.get(i).getArrival()+"\t\t"+listfinal.get(i).getRi()+"\t\t"+listfinal.get(i).getHi()+"\t\t"+listfinal.get(i).getTi());
-                fw.write("\n"); 
-            }
-            fw.write("cost : "+Util.cost(listfinal)); 
-             
-            fw.close();    
-        } catch(Exception e){
-        	System.out.println(e);
-        }    
-            System.out.println("File "+filename+".txt berhasil disimpan di D");    
-    }
-    public static void exportstat(ArrayList<Ship> initial, ArrayList<Ship> hc, ArrayList<Ship> ils, String filename, int run, long start, long end, long best, long hcs, long hce, long hcb, long gds, long gde, long gdb){
-        try{    
-            FileWriter fw=new FileWriter("D:\\hasil\\stat.txt", true); 
+            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"\\"+alg+"\\stat.txt", true); 
             
-            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(hc)+";"+Util.cost(ils)+";"+start+";"+end+";"+best+";"+hcs+";"+hce+";"+hcb+";"+gds+";"+gde+";"+gdb+";");
+            fw.write(filename+"-"+run+";"+Util.cost(initial)+";"+Util.cost(sol)+";"+start+";"+end+";"+best);
             fw.write("\n");
 //            fw.write(""+Util.cost(initial)+" hc "+Util.cost(hc)+" ils "+Util.cost(ils)); 
             fw.close();    
@@ -442,6 +441,24 @@ public class Util {
         }    
             System.out.println("File berhasil disimpan di D");    
     }
+    public static void export(ArrayList<Ship> listfinal, String filename, int run, String alg){
+        try{    
+            FileWriter fw=new FileWriter("D:\\hasil\\"+filename+"\\"+alg+"\\"+filename+"_"+alg+"_"+run+".txt"); 
+            fw.write("Ship"+"\t"+"Berth"+"\t"+"Start"+"\t"+"End"+"\t"+"Cost"+"\t"+"Ti"); 
+            fw.write("\n"); 
+            for (int i = 0; i <listfinal.size(); i++) {
+                fw.write(listfinal.get(i).getShipId()+"\t\t"+listfinal.get(i).getBerth()+"\t\t"+(int)listfinal.get(i).getArrival()+"\t\t"+listfinal.get(i).getRi()+"\t\t"+listfinal.get(i).getHi()+"\t\t"+listfinal.get(i).getTi());
+                fw.write("\n"); 
+            }
+            fw.write("cost : "+Util.cost(listfinal)); 
+             
+            fw.close();    
+        } catch(Exception e){
+        	System.out.println(e);
+        }    
+            System.out.println("File "+filename+".txt berhasil disimpan di D");    
+    }
+    
     
     
 }

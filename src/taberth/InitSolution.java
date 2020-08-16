@@ -17,10 +17,8 @@ import java.util.stream.Collectors;
  * @author refing
  */
 public class InitSolution {
-    
     ArrayList<Ship> listship;
     ArrayList<Ship> initialsol;
-//    ArrayList<Ship> initialsol2;
     static int M = 0;
     
     public InitSolution(ArrayList<Ship> listship){

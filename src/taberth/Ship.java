@@ -24,23 +24,15 @@ public class Ship implements Cloneable{
     private int manouvTime;
     private int costWait;
     private int costDelay;
-    
-//    private int safeadj;
-//    private int safeopp;
-    //private ArrayList <Integer> processTimes = new ArrayList<>();
-    private int [] processTimes = new int[ReadFile.totalberth];
-    
+    private int [] processTimes = new int[11];
     private int ti;
     private int ri;
     private int hi;
     private int ui;
-    
     private int berth;
     
     private Ship ship;
     
-
-
     public Ship(int shipId) {
         this.shipId = shipId;
     }
